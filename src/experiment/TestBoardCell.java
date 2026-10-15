@@ -1,3 +1,13 @@
+/**
+ * TestBoardCell Class
+ * 
+ * Represents an individual cell on a 4x4 Clue game board. Each cell stores its row/col 
+ * coordinates and tracks whether it is a room or occupied.
+ * 
+ * @authors Jaylene Khourn, Trisha Varadaraj
+ * 
+ */
+
 package experiment;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,3 +1,13 @@
+/**
+ * TestBoard Class
+ * 
+ * Represents a 4x4 Clue Game board used to test adjacency lists and movement target
+ * calculations.
+ * 
+ * @authors Jaylene Khourn, Trisha Varadaraj
+ * 
+ */
+
 package experiment;
 
 import java.util.HashSet;
@@ -5,6 +15,7 @@ import java.util.Set;
 
 
 // 4x4 grid board for movement experimentations.
+
 public class TestBoard {
     private TestBoardCell[][] grid;
     public static final int ROWS = 4;
