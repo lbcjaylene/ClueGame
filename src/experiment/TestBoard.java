@@ -19,7 +19,7 @@ public class TestBoard {
         }
     }
 
-    public void calcTargets(TestBoardCell startCell, int pathlength) {
+    public void CalcTargets(TestBoardCell startCell, int pathlength) {
         // Stub implementation for TDD
     }
 
