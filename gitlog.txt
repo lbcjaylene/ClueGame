@@ -1,3 +1,22 @@
+commit d6be72e49d3a420e47d90bdc275879a1a3bb238c
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Wed Oct 14 19:13:13 2026 -0600
+
+    Some Comments I Added .
+
+ src/experiment/TestBoard.java |  2 +-
+ src/tests/BoardTestsExp.java  | 76 +++++++++++++++++++++----------------------
+ 2 files changed, 39 insertions(+), 39 deletions(-)
+
+commit 46c0ebd454c6b74b3ca41872170ef7d0e7dc3631
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Wed Oct 14 19:05:11 2026 -0600
+
+    Add gitlog.txt for assignment
+
+ gitlog.txt | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
 commit 1497c5fe7e9cdeb0cdb0f6f09a717aa3e6337d80
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
 Date:   Wed Oct 14 19:04:16 2026 -0600
