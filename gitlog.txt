@@ -1,0 +1,39 @@
+commit 1497c5fe7e9cdeb0cdb0f6f09a717aa3e6337d80
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Wed Oct 14 19:04:16 2026 -0600
+
+    Add comments, BoardTestsExp,TestBoardCell,TestBoard.java setup.
+
+ src/experiment/TestBoard.java     |  30 +++++++-
+ src/experiment/TestBoardCell.java |  34 +++++++--
+ src/tests/BoardTestsExp.java      | 143 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 199 insertions(+), 8 deletions(-)
+
+commit 48b0612992e03b8df72f45110c184b5cf5294d14
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Wed Oct 14 13:09:47 2026 -0600
+
+    initiated TestBoardCell class and TestBoard class
+
+ src/experiment/TestBoard.java | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+commit 964920dccc0c5835743a37ec195d6ddeb4f37eaa
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Wed Oct 14 12:59:33 2026 -0600
+
+    added TestBoardCell methods
+
+ src/experiment/TestBoardCell.java | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+commit 4b2b8faf76c394eda58f241c2074da76f0aeaa1b
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Wed Oct 14 11:57:36 2026 -0600
+
+    initialized project
+
+ .classpath | 11 +++++++++++
+ .gitignore | 10 ++++++++++
+ .project   | 17 +++++++++++++++++
+ 3 files changed, 38 insertions(+)
