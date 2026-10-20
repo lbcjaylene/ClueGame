@@ -1,3 +1,26 @@
+commit d3a0d610a425631411f5f091c7debc62ec491638
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Mon Oct 19 21:28:13 2026 -0600
+
+    TestBoard and TestBoardCell done. Passes all JUnit Tests.
+
+ ...ect - Decision Trees - Student-checkpoint.ipynb | 401 ++++++++++++++++++
+ ...ect - Random Forests - Student-checkpoint.ipynb | 332 +++++++++++++++
+ Project - Decision Trees - Student.ipynb           | 401 ++++++++++++++++++
+ Project - Random Forests - Student.ipynb           | 449 +++++++++++++++++++++
+ src/experiment/TestBoard.java                      |  95 ++++-
+ src/experiment/TestBoardCell.java                  |  81 ++--
+ 6 files changed, 1716 insertions(+), 43 deletions(-)
+
+commit 3deec78d4115ee21ca11c07c5432636a3a984a18
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Wed Oct 14 19:13:58 2026 -0600
+
+    Added GitLog
+
+ gitlog.txt | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
 commit d6be72e49d3a420e47d90bdc275879a1a3bb238c
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
 Date:   Wed Oct 14 19:13:13 2026 -0600
