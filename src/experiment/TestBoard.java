@@ -1,3 +1,15 @@
+/**
+ * TestBoard Class
+ *
+ * Represents a 4x4 Clue game board that calculates
+ * adjacency lists for each cell and determines
+ * valid movement targets based on the number of steps,
+ * occupied cells, and room locations
+ *
+ * @author Jaylene Khourn, Trisha Varadaraj
+ * 
+ */
+
 package experiment;
 import java.util.HashSet;
 
@@ -10,91 +22,97 @@ public class TestBoard {
     public static final int COLS = 4;
 
     // 2D array for board 
-    private TestBoardCell[][] Grid;
+    private TestBoardCell[][] grid;
 
     // tracking target movement + visited cells
     private Set<TestBoardCell> targets;
     private Set<TestBoardCell> visitedCells;
 
-    // Constructor: initializes the board grid  .    
+    // constructor: initializes the board grid  .   
+    
     public TestBoard() {
-        Grid = new TestBoardCell[ROWS][COLS];
-        targets= new HashSet<>();
+        grid = new TestBoardCell[ROWS][COLS];
+        targets = new HashSet<>();
         visitedCells = new HashSet<>();
 
-        // Create a new cell object for every slot in grid
+        // creates a new cell object for every slot in grid
         for (int r = 0; r < ROWS; r++) {
             for (int c = 0; c <COLS; c++) {
-                Grid[r][c] = new TestBoardCell(r, c);
+                grid[r][c] = new TestBoardCell(r, c);
             }
         }
-
         setupAdjacencies();
     }
 
-    // Helper method to add valid neighbors (up, down, left, right) .    
+    // helper method to add valid neighbors (up, down, left, right) .    
+    
     private void setupAdjacencies() {
         for (int r = 0; r < ROWS; r++) {
             for (int c = 0; c < COLS; c++) {
-                TestBoardCell current = Grid[r][c];
+                TestBoardCell current = grid[r][c];
 
                 // Check Up 
-                if (r -1 >=0) {
-                    current.addAdjacency(Grid[r - 1][c]);
+                if (r - 1 >= 0) {
+                    current.addAdjacency(grid[r - 1][c]);
                 }
                 // Check Down 
                 if (r + 1 < ROWS) {
-                    current.addAdjacency(Grid[r + 1][c]);
+                    current.addAdjacency(grid[r + 1][c]);
                 }
-                // Check Left 
-                if (c- 1 >= 0) {
-                    current.addAdjacency(Grid[r][c- 1]);
+                // Check Left neighbor
+                if (c - 1 >= 0) {
+                    current.addAdjacency(grid[r][c- 1]);
                 }
                 // Check Right neighbor
                 if (c + 1 <COLS) {
-                    current.addAdjacency(Grid[r][c + 1]);
+                    current.addAdjacency(grid[r][c + 1]);
                 }
             }
         }
     }
 
+    // calculates all possible movement targets from a starting cell
+    // based on the number of steps
+    
     public void calcTargets(TestBoardCell startCell, int pathlength) {
         targets.clear();
         visitedCells.clear();
         
-        // Mark starting location as visited so no backtrack .    
+        // prevents unnecessary recursion if an invalid movement length is passed
+        if (pathlength <= 0) {
+        	return;
+        }
+        
+        // Mark starting location as visited so there is no backtrack .    
         visitedCells.add(startCell);
-
-      
-        TargetsHelper(startCell, pathlength);
+        targetsHelper(startCell, pathlength);
     }
 
+    // recursively finds valid movement targets by checking adjacent cells
     
-    private void TargetsHelper(TestBoardCell currentCell, int stepsRemaining) {
+    private void targetsHelper(TestBoardCell currentCell, int stepsRemaining) {
         for (TestBoardCell neighbor : currentCell.getAdjList()) {
 
             // Skip cells we already visited
-            if (visitedCells.contains(neighbor)|| neighbor.getOccupied()) {
+            if (visitedCells.contains(neighbor) || neighbor.getOccupied()) {
                 continue;
             }
-
-           
             visitedCells.add(neighbor);
 
             // Entering a room stops movement immediately. Reaching 1 step to go means the neighbor is final target .        
             if (neighbor.isRoom() || stepsRemaining == 1) {
                 targets.add(neighbor);
             } else {
-                TargetsHelper(neighbor,stepsRemaining - 1);
+                targetsHelper(neighbor,stepsRemaining - 1);
             }
 
-            // remove from visited so can be used by other .        
+            // remove the cell so other movement paths can be used .        
             visitedCells.remove(neighbor);
         }
     }
 
     public TestBoardCell getCell(int row, int col) {
-        return Grid[row][col];
+        return grid[row][col];
     }
 
     public Set<TestBoardCell> getTargets() {
