@@ -1,3 +1,14 @@
+/**
+ * TestBoardCell Class
+ *
+ * Represents an individual cell on the Clue game board
+ * Stores the cell's row and column, adjacent cells,
+ * and whether the cell is a room or occupied.
+ *
+ * @author Jaylene Khourn, Trisha Varadaraj
+ * 
+ */
+
 package experiment;
 
 import java.util.HashSet;
@@ -5,8 +16,8 @@ import java.util.Set;
 
 public class TestBoardCell {
 
-    private int cellRows;
-    private int CellColumn;
+    private int row;
+    private int col;
 
     // Flags for special cell types
     private boolean rooms;
@@ -15,23 +26,24 @@ public class TestBoardCell {
     private Set<TestBoardCell> neighbors;
 
     public TestBoardCell(int rowNum, int colNum) {
-        this.cellRows = rowNum;
-        this.CellColumn = colNum;
+        this.row = rowNum;
+        this.col = colNum;
         this.rooms = false;
         this.occupied = false;
         this.neighbors = new HashSet<>();
     }
 
-    // Add a neighbor cell to cell's adjacency set
+    // Add a neighboring cell to the adjacency list
     public void addAdjacency(TestBoardCell cell) {
         neighbors.add(cell);
     }
 
-    
+    // returns the set of adjacency cells
     public Set<TestBoardCell> getAdjList() {
         return neighbors;
     }
-
+    
+    // sets whether this cell is a room
     public void setRoom(boolean isRoom) {
         this.rooms = isRoom;
     }
@@ -53,11 +65,11 @@ public class TestBoardCell {
 
     // Getter for row coordinate
     public int getRow() {
-        return cellRows;
+        return row;
     }
 
     // Getter for column coordinate
     public int getCol() {
-        return CellColumn;
+        return col;
     }
 }
