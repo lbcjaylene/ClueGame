@@ -1,46 +1,63 @@
 package experiment;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class TestBoardCell {
-	
-	// constructor 
-	private int row;
-	private int col;
-	private boolean isRoom;
-	private boolean isOccupied;
-	
-	public TestBoardCell(int row, int col) {  // accepts row/column coordinates .    
-		this.row =row;  // Assigns row parameter to instance variable row .    
-		this.col = col;
-	}
-	
-	// setter to add a cell 
-	
-	public void addAdjacency(TestBoardCell cell) {
-		
-	}
-	
-	// NEW
-	
-	public Set<TestBoardCell> getAdjList(){
-		return new HashSet<>();
-	}
-	public void setRoom(boolean room) {
-        this.isRoom= room;
+
+    private int cellRows;
+    private int CellColumn;
+
+    // Flags for special cell types
+    private boolean rooms;
+    private boolean occupied;
+
+    private Set<TestBoardCell> neighbors;
+
+    public TestBoardCell(int rowNum, int colNum) {
+        this.cellRows = rowNum;
+        this.CellColumn = colNum;
+        this.rooms = false;
+        this.occupied = false;
+        this.neighbors = new HashSet<>();
     }
 
+    // Add a neighbor cell to cell's adjacency set
+    public void addAdjacency(TestBoardCell cell) {
+        neighbors.add(cell);
+    }
+
+    
+    public Set<TestBoardCell> getAdjList() {
+        return neighbors;
+    }
+
+    public void setRoom(boolean isRoom) {
+        this.rooms = isRoom;
+    }
+
+    // Check if room .    
     public boolean isRoom() {
-        return isRoom;
+        return rooms;
     }
 
-    public void setOccupied(boolean occupied) {  // To mark occupied or empty .    
-        this.isOccupied = occupied;
+    // Set whether this cell has another player on it .    
+    public void setOccupied(boolean isOccupied) {
+        this.occupied = isOccupied;
     }
 
-    public boolean getOccupied(){
-        return isOccupied;
+    // Check if cell is occupied .             
+    public boolean getOccupied() {
+        return occupied;
+    }
+
+    // Getter for row coordinate
+    public int getRow() {
+        return cellRows;
+    }
+
+    // Getter for column coordinate
+    public int getCol() {
+        return CellColumn;
     }
 }
-	
-
