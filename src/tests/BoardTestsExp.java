@@ -67,32 +67,32 @@ public class BoardTestsExp {
     // Tests normal movement on an empty board (no obstacles) .    
     @Test
     public void testTargetsNormal() {
-        TestBoardCell CellStart = board.getCell(0, 0);
+        TestBoardCell cellStart = board.getCell(0, 0);
 
         // Test roll 1, 2, 3, and 6 from top-left corner
-        board.CalcTargets(CellStart, 1); // Calculates reachable targets from [0][0] with a roll of 1 .    
+        board.calcTargets(cellStart, 1); // Calculates reachable targets from [0][0] with a roll of 1 .    
         assertEquals(2, board.getTargets().size()); // Results in 2 targets .    
 
-        board.CalcTargets(CellStart, 2);
+        board.calcTargets(cellStart, 2);
         assertEquals(3, board.getTargets().size());
 
-        board.CalcTargets(CellStart, 3);
+        board.calcTargets(cellStart, 3);
         assertEquals(6, board.getTargets().size());
 
-        board.CalcTargets(CellStart, 6);
+        board.calcTargets(cellStart, 6);
         assertEquals(7, board.getTargets().size());
 
         // Test roll 1, 2, and 3 from middle .    
-        TestBoardCell cellcenter = board.getCell(2, 2);
+        TestBoardCell cellCenter = board.getCell(2, 2);
 
-        board.CalcTargets(cellcenter, 1);
+        board.calcTargets(cellCenter, 1);
         assertEquals(4, board.getTargets().size());
 
-        board.CalcTargets(cellcenter, 2);
-        assertEquals(8, board.getTargets().size());
+        board.calcTargets(cellCenter, 2);
+        assertEquals(6, board.getTargets().size());
 
-        board.CalcTargets(cellcenter, 3);
-        assertEquals(11, board.getTargets().size());
+        board.calcTargets(cellCenter, 3);
+        assertEquals(8, board.getTargets().size());
     }
 
     // Tests entering a room (player stops when entering room)
@@ -100,12 +100,12 @@ public class BoardTestsExp {
     public void testTargetsRoom() {
         board.getCell(1, 2).setRoom(true);
 
-        board.CalcTargets(board.getCell(0, 2), 2);
+        board.calcTargets(board.getCell(0, 2), 2);
         Set<TestBoardCell> targets = board.getTargets();
         assertEquals(4, targets.size());
         assertTrue(targets.contains(board.getCell(1, 2)));
 
-        board.CalcTargets(board.getCell(2, 2), 1);
+        board.calcTargets(board.getCell(2, 2), 1);
         targets = board.getTargets();
         assertEquals(4, targets.size());
         assertTrue(targets.contains(board.getCell(1, 2)));
@@ -116,12 +116,12 @@ public class BoardTestsExp {
     public void testTargetsOccupied() {
         board.getCell(1, 0).setOccupied(true);
 
-        board.CalcTargets(board.getCell(0, 0), 2);
+        board.calcTargets(board.getCell(0, 0), 2);
         Set<TestBoardCell> targets = board.getTargets();
-        assertEquals(1, targets.size());
+        assertEquals(2, targets.size());
         assertFalse(targets.contains(board.getCell(1, 0)));
 
-        board.CalcTargets(board.getCell(2, 1), 1);
+        board.calcTargets(board.getCell(2, 1), 1);
         assertEquals(4, board.getTargets().size());
     }
 
@@ -131,13 +131,13 @@ public class BoardTestsExp {
         board.getCell(0, 2).setRoom(true);
         board.getCell(1, 2).setOccupied(true);
 
-        board.CalcTargets(board.getCell(0, 1), 2);
+        board.calcTargets(board.getCell(0, 1), 2);
         Set<TestBoardCell> targets = board.getTargets();
         assertEquals(3, targets.size());
         assertTrue(targets.contains(board.getCell(0, 2)));
         assertFalse(targets.contains(board.getCell(1, 2)));
 
-        board.CalcTargets(board.getCell(2, 2), 3);
-        assertEquals(8, board.getTargets().size());
+        board.calcTargets(board.getCell(2, 2), 3);
+        assertEquals(7, board.getTargets().size());
     }
 }
