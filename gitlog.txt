@@ -1,81 +1,47 @@
+commit 51ab32a53197f616fe7159ebbde657c2c6537b0c
+Author:     lbcjaylene <jayleneekhourn@gmail.com>
+AuthorDate: Mon Oct 19 22:23:11 2026 -0600
+Commit:     lbcjaylene <jayleneekhourn@gmail.com>
+CommitDate: Mon Oct 19 22:23:11 2026 -0600
+
+    README for JUnite test corrections
+
+commit 112dad08a1c292df83477f6686c3c38b2429544b
+Author:     lbcjaylene <jayleneekhourn@gmail.com>
+AuthorDate: Mon Oct 19 22:18:42 2026 -0600
+Commit:     lbcjaylene <jayleneekhourn@gmail.com>
+CommitDate: Mon Oct 19 22:18:42 2026 -0600
+
+    fixed JUnite test expectations for movement targets
+
+commit 4aada41445d70afbb6be4125e099e2ad0acb00a1
+Author:     lbcjaylene <jayleneekhourn@gmail.com>
+AuthorDate: Mon Oct 19 22:04:54 2026 -0600
+Commit:     lbcjaylene <jayleneekhourn@gmail.com>
+CommitDate: Mon Oct 19 22:04:54 2026 -0600
+
+    updated cluegame file
+
+commit e5fb6ee4e9431b5a6e629492d2061f524c78ccbd
+Author:     lbcjaylene <jayleneekhourn@gmail.com>
+AuthorDate: Mon Oct 19 21:57:53 2026 -0600
+Commit:     lbcjaylene <jayleneekhourn@gmail.com>
+CommitDate: Mon Oct 19 21:57:53 2026 -0600
+
+    cleaned up/added TestBoard comments and formatting
+
+commit 776bdadbad058e7dd5d6ae3f8bd054840bc382e9
+Author:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
+AuthorDate: Mon Oct 19 21:29:06 2026 -0600
+Commit:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
+CommitDate: Mon Oct 19 21:29:06 2026 -0600
+
+    Completed
+
 commit d3a0d610a425631411f5f091c7debc62ec491638
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Mon Oct 19 21:28:13 2026 -0600
+Author:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
+AuthorDate: Mon Oct 19 21:28:13 2026 -0600
+Commit:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
+CommitDate: Mon Oct 19 21:28:13 2026 -0600
 
     TestBoard and TestBoardCell done. Passes all JUnit Tests.
-
- ...ect - Decision Trees - Student-checkpoint.ipynb | 401 ++++++++++++++++++
- ...ect - Random Forests - Student-checkpoint.ipynb | 332 +++++++++++++++
- Project - Decision Trees - Student.ipynb           | 401 ++++++++++++++++++
- Project - Random Forests - Student.ipynb           | 449 +++++++++++++++++++++
- src/experiment/TestBoard.java                      |  95 ++++-
- src/experiment/TestBoardCell.java                  |  81 ++--
- 6 files changed, 1716 insertions(+), 43 deletions(-)
-
-commit 3deec78d4115ee21ca11c07c5432636a3a984a18
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Wed Oct 14 19:13:58 2026 -0600
-
-    Added GitLog
-
- gitlog.txt | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-commit d6be72e49d3a420e47d90bdc275879a1a3bb238c
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Wed Oct 14 19:13:13 2026 -0600
-
-    Some Comments I Added .
-
- src/experiment/TestBoard.java |  2 +-
- src/tests/BoardTestsExp.java  | 76 +++++++++++++++++++++----------------------
- 2 files changed, 39 insertions(+), 39 deletions(-)
-
-commit 46c0ebd454c6b74b3ca41872170ef7d0e7dc3631
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Wed Oct 14 19:05:11 2026 -0600
-
-    Add gitlog.txt for assignment
-
- gitlog.txt | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
-
-commit 1497c5fe7e9cdeb0cdb0f6f09a717aa3e6337d80
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Wed Oct 14 19:04:16 2026 -0600
-
-    Add comments, BoardTestsExp,TestBoardCell,TestBoard.java setup.
-
- src/experiment/TestBoard.java     |  30 +++++++-
- src/experiment/TestBoardCell.java |  34 +++++++--
- src/tests/BoardTestsExp.java      | 143 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 199 insertions(+), 8 deletions(-)
-
-commit 48b0612992e03b8df72f45110c184b5cf5294d14
-Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Wed Oct 14 13:09:47 2026 -0600
-
-    initiated TestBoardCell class and TestBoard class
-
- src/experiment/TestBoard.java | 5 +++++
- 1 file changed, 5 insertions(+)
-
-commit 964920dccc0c5835743a37ec195d6ddeb4f37eaa
-Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Wed Oct 14 12:59:33 2026 -0600
-
-    added TestBoardCell methods
-
- src/experiment/TestBoardCell.java | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-commit 4b2b8faf76c394eda58f241c2074da76f0aeaa1b
-Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Wed Oct 14 11:57:36 2026 -0600
-
-    initialized project
-
- .classpath | 11 +++++++++++
- .gitignore | 10 ++++++++++
- .project   | 17 +++++++++++++++++
- 3 files changed, 38 insertions(+)
