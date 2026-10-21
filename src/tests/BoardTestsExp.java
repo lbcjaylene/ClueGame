@@ -140,4 +140,5 @@ public class BoardTestsExp {
         board.calcTargets(board.getCell(2, 2), 3);
         assertEquals(7, board.getTargets().size());
     }
+    
 }

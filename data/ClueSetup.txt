@@ -1,0 +1,13 @@
+// Rooms and room cards for the Minecraft Themed Clue Board
+Room, Enchantment Room, E 
+Room, Nether Fortress, N
+Room, Trial Chambers, T
+Room, Blacksmith, B
+Room, Stronghold, S
+Room, Woodland Mansion, M
+Room, Ancient City, A
+Room, Cherry Grove, C
+Room, End City, D
+// Board spaces
+Space, Walkway, W
+Space, Unused, X
