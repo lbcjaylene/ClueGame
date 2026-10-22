@@ -1,0 +1,28 @@
+
+ClueGame - Test Selection Explanation
+
+(Jaylene)
+
+Room Configuration Tests:
+
+I selected several rooms throughout my Minecraft-themed
+setup file to verify that the configuration was loaded
+correctly.
+
+I tested Walkway and Unused to make sure
+the program correctly loads board spaces in addition
+to regular rooms.
+I tested Enchantment Room because it is the first room
+listed in the setup file, along with Trial Chambers,
+Stronghold, and Ancient City to check entries throughout
+the file.
+I also tested End City because it is the last actual
+room listed in the setup file.
+
+
+(Trisha)
+
+Board Layout Tests:
+
+[Partner will add explanations for selected doorway,
+room center, room label, and other board cells.]

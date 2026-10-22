@@ -1,4 +1,4 @@
-package experiment;
+package clueGame;
 
 import java.util.Set;
 
