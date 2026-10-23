@@ -1,47 +1,23 @@
-commit 51ab32a53197f616fe7159ebbde657c2c6537b0c
-Author:     lbcjaylene <jayleneekhourn@gmail.com>
-AuthorDate: Mon Oct 19 22:23:11 2026 -0600
-Commit:     lbcjaylene <jayleneekhourn@gmail.com>
-CommitDate: Mon Oct 19 22:23:11 2026 -0600
+commit ef1c131dae007820984cb3261d286375b1bacdda
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Thu Oct 22 19:56:58 2026 -0600
 
-    README for JUnite test corrections
+    Complete TDD Part 1: updated FileInitTests and added Tests.txt
 
-commit 112dad08a1c292df83477f6686c3c38b2429544b
-Author:     lbcjaylene <jayleneekhourn@gmail.com>
-AuthorDate: Mon Oct 19 22:18:42 2026 -0600
-Commit:     lbcjaylene <jayleneekhourn@gmail.com>
-CommitDate: Mon Oct 19 22:18:42 2026 -0600
+commit c58d91de329da336a7f772723caedc6ce97ad846
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Oct 22 19:12:07 2026 -0600
 
-    fixed JUnite test expectations for movement targets
+    initialized testBoardDimensions test
 
-commit 4aada41445d70afbb6be4125e099e2ad0acb00a1
-Author:     lbcjaylene <jayleneekhourn@gmail.com>
-AuthorDate: Mon Oct 19 22:04:54 2026 -0600
-Commit:     lbcjaylene <jayleneekhourn@gmail.com>
-CommitDate: Mon Oct 19 22:04:54 2026 -0600
+commit 4ce0160061593078c86c6a751ce530dccaca29de
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Oct 22 15:59:14 2026 -0600
 
-    updated cluegame file
+    implemented room setup configurations and one of the JUnit tests
 
-commit e5fb6ee4e9431b5a6e629492d2061f524c78ccbd
-Author:     lbcjaylene <jayleneekhourn@gmail.com>
-AuthorDate: Mon Oct 19 21:57:53 2026 -0600
-Commit:     lbcjaylene <jayleneekhourn@gmail.com>
-CommitDate: Mon Oct 19 21:57:53 2026 -0600
+commit bbb64ca6c9fdf078a689cefaedde892f0b285a9b
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Wed Oct 21 12:52:22 2026 -0600
 
-    cleaned up/added TestBoard comments and formatting
-
-commit 776bdadbad058e7dd5d6ae3f8bd054840bc382e9
-Author:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
-AuthorDate: Mon Oct 19 21:29:06 2026 -0600
-Commit:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
-CommitDate: Mon Oct 19 21:29:06 2026 -0600
-
-    Completed
-
-commit d3a0d610a425631411f5f091c7debc62ec491638
-Author:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
-AuthorDate: Mon Oct 19 21:28:13 2026 -0600
-Commit:     Trisha Varadaraj <trisha_varadaraj@mines.edu>
-CommitDate: Mon Oct 19 21:28:13 2026 -0600
-
-    TestBoard and TestBoardCell done. Passes all JUnit Tests.
+    created classes from Clue Init UML

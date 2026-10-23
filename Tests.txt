@@ -19,11 +19,14 @@ reads the entire layout correctly
 
 (Trisha)
 testDoorDirections():
+
 We selected cells (3,5), (5,2), (5,10), and (7,2) because they represent
 the four possible doorway directions: LEFT, UP, RIGHT, and DOWN.
 We also tested cell (0,0) to make sure a regular room cell is not incorrectly
 identified as a doorway
+
 testRoomCenterAndLabel():
+
 We selected cells (2,2) and (2,3) because they represent the center and
 label of the Enchantment Room. We verified that each cell has the correct
 property and that both cells belong to the correct room. We also checked that

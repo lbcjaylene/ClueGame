@@ -16,7 +16,7 @@ class FileInitTests {
 	@BeforeEach
 	public void setUp() throws Exception {
 		board = Board.getInstance();
-		board.setConfigFiles("data/ClueLayout.csv","data/ClueSetup.txt");
+		board.setConfigFiles("ClueLayout.csv","ClueSetup.txt");
 		board.initialize();
 	}
 	
@@ -39,9 +39,6 @@ class FileInitTests {
 		assertEquals(23, board.getNumColumns());
 	}
 	
-	
-
-
 
 	// tests all 4 doorway directions and a regular cell in the layout
 		@Test
@@ -82,7 +79,6 @@ class FileInitTests {
 		    assertSame(label, enchantment.getLabelCell());
 		}
 		
-		
 		// tests the secret passage destinations and a cell without a passage
 		@Test
 		public void testSecretPassages() {
@@ -92,11 +88,5 @@ class FileInitTests {
 		    assertEquals('N', board.getCell(19, 18).getSecretPassage());
 		    assertEquals(' ', board.getCell(0, 0).getSecretPassage());
 		}	
-
-	
 }
-
-
-
-
 

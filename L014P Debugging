@@ -1,8 +1,0 @@
-Jaylene Khourn, Trisha Varadaraj
-
-Tests completed: 
-- testBadColumns() from LO13A assignment
-
-We used the debugger to inspect objects and their attributes. We examined the BoardCell
-objects and verified that their properties were being assigned correctly. This is useful when checking
-whether the board is being initialized properly
