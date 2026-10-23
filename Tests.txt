@@ -3,26 +3,17 @@ ClueGame - Test Selection Explanation
 
 (Jaylene)
 
-Room Configuration Tests:
+testRoomNames():
 
-I selected several rooms throughout my Minecraft-themed
-setup file to verify that the configuration was loaded
-correctly.
+We tested several room names from our Minecraft-themed setup file,
+including Enchantment Room, Trial Chambers, Stronghold, Ancient City,
+and End City. We also tested Walkway and Unused to make sure the program
+correctly reads both room and space entries
 
-I tested Walkway and Unused to make sure
-the program correctly loads board spaces in addition
-to regular rooms.
-I tested Enchantment Room because it is the first room
-listed in the setup file, along with Trial Chambers,
-Stronghold, and Ancient City to check entries throughout
-the file.
-I also tested End City because it is the last actual
-room listed in the setup file.
+testBoardDimensions():
+
+We tested that our board contains 22 rows and 23 columns. These values 
+match the dimensions of our ClueLayout.csv file and verify that the program
+reads the entire layout correctly
 
 
-(Trisha)
-
-Board Layout Tests:
-
-[Partner will add explanations for selected doorway,
-room center, room label, and other board cells.]

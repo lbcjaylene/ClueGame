@@ -1,10 +1,24 @@
-package clueGame;
+/*
+ * Board Class
+ * 
+ * Represents the board using the singleton design patterns.
+ * Reads the setup and layout configuration files, creates the board
+ * cells, store information about each room, doorway, centers, labels,
+ * and the secret passages
+ * 
+ * @author Jaylene Khourn, Trisha Varadaraj
+ * 
+ */
 
+package clueGame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Board {
 
@@ -14,38 +28,40 @@ public class Board {
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
-	
-	// singleton method
-	
 	private static Board theInstance = new Board();
 	
 	// private constructor prevents creating multiple boards
-	
 	private Board() {
 		super();
 	}
 	
 	// returns the single instance of Board
-	
 	public static Board getInstance() {
 		return theInstance;
 	}
 	
 	// sets the config file names
-	
 	public void setConfigFiles(String layoutFile, String setupFile) {
 		layoutConfigFile = layoutFile;
 		setupConfigFile = setupFile;
 	}
 	
 	// initializes the board
-	
 	public void initialize() {
+		
+		// loads the room info before we create the board layout
+		try {
+			loadSetupConfig();
+			loadLayoutConfig();
+		}
+		// displays an error if either config files cant be loaded
+		catch (FileNotFoundException | BadConfigFormatException e) {
+			System.err.println("Error initializing board: " + e.getMessage());
+		}
 		
 	}
 	
 	// loads the room info from the setup file
-	
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 		
 		// new map each time we load in setup
@@ -57,7 +73,6 @@ public class Board {
 
 	        // read the file one line at a time
 	        while (scanner.hasNextLine()) {
-
 	            String line = scanner.nextLine().trim();
 
 	            // skip empty lines
@@ -101,14 +116,147 @@ public class Board {
 	}
 	
 	// loads in the board layout
-	
-	public void loadLayoutConfig() {
+	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException {
+		
+		// temporarily stores each row of the layout
+		List<String[]> rows = new ArrayList<>();
+		
+		// opens the layout file from the data folder
+		File file = new File("data/" + layoutConfigFile);
+		try (Scanner scanner = new Scanner(file)) {
+			
+			// read each row of the file
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine().trim();
+				
+				// skip any empty lines
+				if (line.isEmpty()) {
+					continue;
+				}
+				
+				// split the row into individual cells
+				String[] cells = line.split(",", -1);
+				rows.add(cells);
+			}
+		}
+		
+		// determine the number of rows in the board
+		numRows = rows.size();
+		
+		// making sure the file is not empty
+		if(numRows == 0) {
+			throw new BadConfigFormatException("Layout file is empty.");
+		}
+		
+		// determine the number of columns by using the first row
+		numColumns = rows.get(0).length;
+		
+		// check every row that has the same number of columns
+		for (String[] row : rows) {
+		    if (row.length != numColumns) {
+		        throw new BadConfigFormatException("Layout rows have inconsistent columns.");
+		    }
+		}
+		
+		// create grid for board
+		grid = new BoardCell[numRows][numColumns];
+		
+		// loop through every row in the board
+		for (int row = 0; row < numRows; row++) {
+			String[] cells = rows.get(row);
+			
+			// loop through every column in the current row
+			for (int col = 0; col < numColumns; col++) {
+				
+				// remove whitespace
+				String cellData = cells[col].trim();
+
+				// check for empty cells before reading the initial
+				if (cellData.isEmpty()) {
+				    throw new BadConfigFormatException("Empty cell at row " + row + ", column " + col);
+				}
+
+				// first char represents the room
+				char initial = cellData.charAt(0);
+				
+				// making sure the initial exists in the setup
+				if (!roomMap.containsKey(initial)) {
+				    throw new BadConfigFormatException("Undefined room initial: " + initial);
+				}
+				
+				// create a BoardCell at this pos
+				grid[row][col] = new BoardCell(row, col, initial);
+				
+				// checks if this cell contains a secret passage
+				if (cellData.length() == 2 && Character.isUpperCase(cellData.charAt(1))) {
+				    grid[row][col].setSecretPassage(cellData.charAt(1));
+				}
+				
+				// the asterisk identifies the center of a room
+				if (cellData.contains("*")) {
+				    grid[row][col].setRoomCenter(true);
+				    
+				    // stores this cell as the room's center
+				    roomMap.get(initial).setCenterCell(grid[row][col]);
+				}
+				
+				// the hashtag identifies the label position of a room
+				if (cellData.contains("#")) {
+				    grid[row][col].setRoomLabel(true);
+				    
+				    // stores this cell as the room's label
+				    roomMap.get(initial).setLabelCell(grid[row][col]);
+				}
+				
+				// check for additional symbols after the room initial
+				if (cellData.length() > 1) {
+					char symbol = cellData.charAt(1);
+					
+					// based on its symbol, assign the doorway direction
+					switch(symbol) {
+					case '^':
+						grid[row][col].setDoorDirection(DoorDirection.UP);
+						break;
+					case 'v':
+						grid[row][col].setDoorDirection(DoorDirection.DOWN);
+						break;
+					case '<':
+						grid[row][col].setDoorDirection(DoorDirection.LEFT);
+						break;
+					case '>':
+						grid[row][col].setDoorDirection(DoorDirection.RIGHT);
+						break;
+					}
+				}
+			}
+		}
 		
 	}
 	
-	// retrieve a room with only the initial 
+	// returns the total number of rows
+	public int getNumRows() {
+		return numRows;
+	}
 	
+	// returns the total number of columns
+	public int getNumColumns() {
+		return numColumns;
+	}
+	
+	// returns the BoardCell at the specified row/col	
+	public BoardCell getCell(int row, int col) {
+		return grid[row][col];
+	}
+	
+	// returns a Room object using the character initial
 	public Room getRoom(char initial) {
 		return roomMap.get(initial);
 	}
+	
+	// returns the Room object associated with a specific BoardCell
+	public Room getRoom(BoardCell cell) {
+		return roomMap.get(cell.getInitial());
+	}
+	
 }
+

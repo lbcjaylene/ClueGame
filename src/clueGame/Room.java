@@ -1,3 +1,13 @@
+/*
+ * Room Class
+ * 
+ * Represents a room on the board. It stores the room's name 
+ * and references to the center of the room and label cells
+ * 
+ * @author Jaylene Khourn, Trisha Varadaraj
+ * 
+ */
+
 package clueGame;
 
 public class Room {
@@ -6,7 +16,7 @@ public class Room {
 	private BoardCell centerCell;
 	private BoardCell labelCell;
 	
-	// constructor to create a room with a name
+	// constructor
 	public Room(String name) {
 		this.name = name;
 	}
