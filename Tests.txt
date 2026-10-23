@@ -17,3 +17,19 @@ match the dimensions of our ClueLayout.csv file and verify that the program
 reads the entire layout correctly
 
 
+(Trisha)
+testDoorDirections():
+We selected cells (3,5), (5,2), (5,10), and (7,2) because they represent
+the four possible doorway directions: LEFT, UP, RIGHT, and DOWN.
+We also tested cell (0,0) to make sure a regular room cell is not incorrectly
+identified as a doorway
+testRoomCenterAndLabel():
+We selected cells (2,2) and (2,3) because they represent the center and
+label of the Enchantment Room. We verified that each cell has the correct
+property and that both cells belong to the correct room. We also checked that
+the Enchantment Room stores references to the correct center and label cells
+testSecretPassages():
+We selected cells (1,1), (2,9), (19,1), and (19,18) because they represent
+the secret passages connecting Enchantment Room and Ancient City, as well as
+Nether Fortress and End City. We also tested cell (0,0) to verify that a regular
+cell does not contain a secret passage
