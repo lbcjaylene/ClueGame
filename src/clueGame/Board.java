@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Set;
+import java.util.HashSet; // NEW 
 
 public class Board {
 
@@ -29,6 +31,10 @@ public class Board {
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private static Board theInstance = new Board();
+	
+	//NEW
+	private java.util.Set<BoardCell> targets = new java.util.HashSet<>();
+	private java.util.Set<BoardCell> visited = new java.util.HashSet<>();
 	
 	// private constructor prevents creating multiple boards
 	private Board() {
@@ -47,12 +53,14 @@ public class Board {
 	}
 	
 	// initializes the board
-	public void initialize() {
+	public void initialize() { 
+		// NEW 
 		
 		// loads the room info before we create the board layout
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
+			calcAdjacencies(); // NEW 
 		}
 		// displays an error if either config files cant be loaded
 		catch (FileNotFoundException | BadConfigFormatException e) {
@@ -60,6 +68,102 @@ public class Board {
 		}
 		
 	}
+	public void calcAdjacencies() { // Calculates every adjacent cell that is valid for every cell on the board grid .     
+		for (int r = 0; r < numRows; r++) {
+			for (int c = 0; c < numColumns; c++) {
+				BoardCell cell = grid[r][c];
+				cell.getAdjList().clear(); // Clears neighbprs before recalculation 
+
+				// Room Centers
+				if (cell.isRoomCenter()) {
+					if (cell.getSecretPassage() != ' ') {
+						Room targetRoom = roomMap.get(cell.getSecretPassage());
+						if (targetRoom != null && targetRoom.getCenterCell() != null) {
+							cell.addAdjacency(targetRoom.getCenterCell());
+						}
+					}
+					for (int row = 0; row < numRows; row++) {
+						for (int col = 0; col < numColumns; col++) {
+							BoardCell checkCell = grid[row][col];
+							if (checkCell.isDoorway()) {
+								Room entryRoom = getRoom(checkCell);
+								if (entryRoom != null && entryRoom.getCenterCell() == cell) {
+									cell.addAdjacency(checkCell); // Connect the room center to doorways pointing into room . 
+								}
+							}
+						}
+					}
+				} 
+				// Walkways
+				else if (cell.isWalkway()) {
+					int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+					for (int[] dir : directions) {
+						int nr = r + dir[0];
+						int nc = c + dir[1];
+						if (nr >= 0 && nr < numRows && nc >= 0 && nc < numColumns) {
+							BoardCell neighbor = grid[nr][nc];
+							if (neighbor.isWalkway() || neighbor.isDoorway()) {  // Walkway to neighboring walkways and doorways connections . 
+								cell.addAdjacency(neighbor);
+							}
+						}
+					}
+				} 
+				//  Doorways
+				else if (cell.isDoorway()) {
+					int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+					for (int[] dir : directions) {
+						int nr = r + dir[0];
+						int nc = c + dir[1];
+						if (nr >= 0 && nr < numRows && nc >= 0 && nc < numColumns) {
+							BoardCell neighbor = grid[nr][nc];
+							if (neighbor.isWalkway()) {
+								cell.addAdjacency(neighbor); // Doorway to adjacent walkways 
+							}
+						}
+					}
+					Room room = getRoom(cell);
+					if (room != null && room.getCenterCell() != null) {
+						cell.addAdjacency(room.getCenterCell()); // Connect doorway to room center which corresponds to it .     
+					}
+				}
+			}
+		}
+	}
+
+	public void calcTargets(BoardCell startCell, int pathLength) {
+		visited.clear();
+		targets.clear();
+		visited.add(startCell);
+		findAllTargets(startCell, pathLength);
+	}
+
+	private void findAllTargets(BoardCell currentCell, int numSteps) {
+		for (BoardCell neighbor : currentCell.getAdjList()) {
+			if (visited.contains(neighbor)) continue;
+			if (neighbor.isOccupied() && !neighbor.isRoomCenter()) continue;
+
+			visited.add(neighbor);
+
+			if (numSteps == 1 || neighbor.isRoomCenter()) {
+				targets.add(neighbor);
+			} else {
+				findAllTargets(neighbor, numSteps - 1);
+			}
+
+			visited.remove(neighbor);
+		}
+	}
+
+	public Set<BoardCell> getTargets() {
+		return targets;
+	}
+
+	public Set<BoardCell> getAdjList(int row, int col) {
+		return grid[row][col].getAdjList();
+	}
+	
+
+	
 	
 	// loads the room info from the setup file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {

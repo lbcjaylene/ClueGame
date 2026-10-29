@@ -90,6 +90,32 @@ public class BoardCell {
 	public void setSecretPassage(char secretPassage) {
 	    this.secretPassage = secretPassage;
 	}
-	
+	private boolean occupied = false;
+
+    public void addAdjacency(BoardCell cell) {
+        if (adjList == null) {
+            adjList = new java.util.HashSet<>();
+        }
+        adjList.add(cell);
+    }
+
+    public Set<BoardCell> getAdjList() {
+        if (adjList == null) {
+            adjList = new java.util.HashSet<>();
+        }
+        return adjList;
+    }
+
+    public boolean isWalkway() {
+        return initial == 'W';
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
 }
 
