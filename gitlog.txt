@@ -1,3 +1,9 @@
+commit 81600af497693cf3df3229afabc22270e6e1e34f
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Fri Oct 23 12:35:05 2026 -0600
+
+    fixed fileinittests, not reading the correct file
+
 commit ef1c131dae007820984cb3261d286375b1bacdda
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
 Date:   Thu Oct 22 19:56:58 2026 -0600
@@ -21,3 +27,4 @@ Author: lbcjaylene <jayleneekhourn@gmail.com>
 Date:   Wed Oct 21 12:52:22 2026 -0600
 
     created classes from Clue Init UML
+

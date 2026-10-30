@@ -10,7 +10,9 @@
  */
 
 package clueGame;
+
 import java.util.Set;
+import java.util.HashSet;
 
 public class BoardCell {
 
@@ -22,55 +24,56 @@ public class BoardCell {
 	private boolean roomCenter;
 	private char secretPassage;
 	private Set<BoardCell> adjList;
-	
-	// constructor 
+	private boolean occupied = false;
+
+	// constructor
 	public BoardCell(int row, int col, char initial) {
 		this.row = row;
 		this.col = col;
 		this.initial = initial;
-		
+
 		// default values
 		this.doorDirection = DoorDirection.NONE;
 		this.roomLabel = false;
 		this.roomCenter = false;
 		this.secretPassage = ' ';
 	}
-	
+
 	// getter for the initial of the room
 	public char getInitial() {
 		return initial;
 	}
-	
+
 	// checks if the cell contains a doorway
 	public boolean isDoorway() {
-	    return doorDirection != DoorDirection.NONE;
+		return doorDirection != DoorDirection.NONE;
 	}
-	
+
 	// returns the direction of the doorway
 	public DoorDirection getDoorDirection() {
-	    return doorDirection;
+		return doorDirection;
 	}
-	
+
 	// sets the direction of the doorway
 	public void setDoorDirection(DoorDirection direction) {
-	    this.doorDirection = direction;
+		this.doorDirection = direction;
 	}
-	
+
 	// checks if the cell is the center of a room
 	public boolean isRoomCenter() {
-	    return roomCenter;
+		return roomCenter;
 	}
 
 	// sets whether the cell is a room center
 	public void setRoomCenter(boolean roomCenter) {
-	    this.roomCenter = roomCenter;
+		this.roomCenter = roomCenter;
 	}
-	
+
 	// checks if the cell contains a room label
 	public boolean isRoomLabel() {
-	    return roomLabel;
+		return roomLabel;
 	}
-	
+
 	// returns if the cell is a room label for the 306 tests
 	public boolean isLabel() {
 		return roomLabel;
@@ -78,44 +81,47 @@ public class BoardCell {
 
 	// sets whether the cell contains a room label
 	public void setRoomLabel(boolean roomLabel) {
-	    this.roomLabel = roomLabel;
+		this.roomLabel = roomLabel;
 	}
-	
+
 	// returns the destination initial of a secret passage
 	public char getSecretPassage() {
-	    return secretPassage;
+		return secretPassage;
 	}
-	
+
 	// sets the destination initial of a secret passage
 	public void setSecretPassage(char secretPassage) {
-	    this.secretPassage = secretPassage;
+		this.secretPassage = secretPassage;
 	}
-	private boolean occupied = false;
 
-    public void addAdjacency(BoardCell cell) {
-        if (adjList == null) {
-            adjList = new java.util.HashSet<>();
-        }
-        adjList.add(cell);
-    }
+	// adds a cell to the adjacency list
+	public void addAdjacency(BoardCell cell) {
+		if (adjList == null) {
+			adjList = new HashSet<>();
+		}
+		adjList.add(cell);
+	}
 
-    public Set<BoardCell> getAdjList() {
-        if (adjList == null) {
-            adjList = new java.util.HashSet<>();
-        }
-        return adjList;
-    }
+	// returns the adjacency list for this cell
+	public Set<BoardCell> getAdjList() {
+		if (adjList == null) {
+			adjList = new java.util.HashSet<>();
+		}
+		return adjList;
+	}
 
-    public boolean isWalkway() {
-        return initial == 'W';
-    }
+	// checks if the cell is a walkway
+	public boolean isWalkway() {
+		return initial == 'W';
+	}
 
-    public boolean isOccupied() {
-        return occupied;
-    }
+	// checks if the cell is occupied by a player
+	public boolean isOccupied() {
+		return occupied;
+	}
 
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
-    }
+	// sets whether the cell is occupies by a player
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
+	}
 }
-
