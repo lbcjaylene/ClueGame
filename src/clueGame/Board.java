@@ -370,27 +370,29 @@ public class Board {
 
 				// check for additional symbols after the room initial
 				if (cellData.length() > 1) {
-					char symbol = cellData.charAt(1);
-
-					// based on its symbol, assign the doorway direction
-					switch (symbol) {
-					case '^':
-						grid[row][col].setDoorDirection(DoorDirection.UP);
-						break;
-					case 'v':
-						grid[row][col].setDoorDirection(DoorDirection.DOWN);
-						break;
-					case '<':
-						grid[row][col].setDoorDirection(DoorDirection.LEFT);
-						break;
-					case '>':
-						grid[row][col].setDoorDirection(DoorDirection.RIGHT);
-						break;
-					}
+					setDoorDirection(grid[row][col], cellData.charAt(1));
 				}
 			}
 		}
 
+	}
+	
+	// helper method for loadLayoutConfig()
+	private void setDoorDirection(BoardCell cell, char symbol) {
+		switch (symbol) {
+		case '^':
+			cell.setDoorDirection(DoorDirection.UP);
+			break;
+		case 'v':
+			cell.setDoorDirection(DoorDirection.DOWN);
+			break;
+		case '<':
+			cell.setDoorDirection(DoorDirection.LEFT);
+			break;
+		case '>':
+			cell.setDoorDirection(DoorDirection.RIGHT);
+			break;
+		}
 	}
 
 	// returns the total number of rows
