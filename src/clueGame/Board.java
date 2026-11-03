@@ -347,26 +347,8 @@ public class Board {
 				// create a BoardCell at this pos
 				grid[row][col] = new BoardCell(row, col, initial);
 
-				// checks if this cell contains a secret passage
-				if (cellData.length() == 2 && Character.isUpperCase(cellData.charAt(1))) {
-					grid[row][col].setSecretPassage(cellData.charAt(1));
-				}
-
-				// the asterisk identifies the center of a room
-				if (cellData.contains("*")) {
-					grid[row][col].setRoomCenter(true);
-
-					// stores this cell as the room's center
-					roomMap.get(initial).setCenterCell(grid[row][col]);
-				}
-
-				// the hashtag identifies the label position of a room
-				if (cellData.contains("#")) {
-					grid[row][col].setRoomLabel(true);
-
-					// stores this cell as the room's label
-					roomMap.get(initial).setLabelCell(grid[row][col]);
-				}
+				// configures the room center, label, and secret passage
+				configureCell(grid[row][col], cellData);
 
 				// check for additional symbols after the room initial
 				if (cellData.length() > 1) {
@@ -377,7 +359,7 @@ public class Board {
 
 	}
 	
-	// helper method for loadLayoutConfig()
+	// helper method for loadLayoutConfig() setDoorDirection()
 	private void setDoorDirection(BoardCell cell, char symbol) {
 		switch (symbol) {
 		case '^':
@@ -392,6 +374,28 @@ public class Board {
 		case '>':
 			cell.setDoorDirection(DoorDirection.RIGHT);
 			break;
+		}
+	}
+	
+	// helper method for loadLayoutConfig() configureCell()
+	private void configureCell(BoardCell cell, String cellData) {
+		char initial = cell.getInitial();
+		
+		// checks for a secret passage
+		if (cellData.length() == 2 && Character.isUpperCase(cellData.charAt(1))) {
+			cell.setSecretPassage(cellData.charAt(1));
+			}
+		
+		// identifies the room center
+		if (cellData.contains("*")) {
+			cell.setRoomCenter(true);
+			roomMap.get(initial).setCenterCell(cell);
+		}
+		
+		// identifies the room label
+		if (cellData.contains("#")) {
+			cell.setRoomLabel(true);
+			roomMap.get(initial).setLabelCell(cell);
 		}
 	}
 
