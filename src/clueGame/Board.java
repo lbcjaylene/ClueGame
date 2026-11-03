@@ -86,7 +86,9 @@ public class Board {
 			}
 		}
 	}
-
+	
+	// HELPER FUNCTIONS:
+	
 	// adds adjacent walkways to a a walkway/doorway cell
 	private void addWalkwayNeighbors(BoardCell cell, int row, int col) {
 		int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
@@ -159,10 +161,8 @@ public class Board {
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
 				BoardCell cell = grid[row][col];
-
 				if (cell.isDoorway()) {
 					Room room = getDoorwayRoom(cell, row, col);
-
 					if (room != null && room.getCenterCell() == center) {
 						center.addAdjacency(cell);
 					}
@@ -213,11 +213,13 @@ public class Board {
 			visited.remove(neighbor);
 		}
 	}
-
+	
+	// 
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
-
+	
+	//
 	public Set<BoardCell> getAdjList(int row, int col) {
 		return grid[row][col].getAdjList();
 	}

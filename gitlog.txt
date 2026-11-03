@@ -1,30 +1,17 @@
-commit 81600af497693cf3df3229afabc22270e6e1e34f
+commit 5000cc1b3f52be10acbe97bd1d96c26e472f1abb
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Fri Oct 23 12:35:05 2026 -0600
+Date:   Fri Oct 30 01:19:06 2026 -0600
 
-    fixed fileinittests, not reading the correct file
+    finished BoardAdjTargetTest.java, added comments, refactored class files
 
-commit ef1c131dae007820984cb3261d286375b1bacdda
+commit b7b0298bc5d5cef5404bae11ecd848ea5936cb0a
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Thu Oct 22 19:56:58 2026 -0600
+Date:   Thu Oct 29 10:59:09 2026 -0600
 
-    Complete TDD Part 1: updated FileInitTests and added Tests.txt
+    Finalized Board engine logic for adgacencies And Targets (More Comments Needed)
 
-commit c58d91de329da336a7f772723caedc6ce97ad846
-Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Thu Oct 22 19:12:07 2026 -0600
+commit 088bb6f8007a030ace4111f10c3e4794fd23a6fb
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Thu Oct 29 10:32:14 2026 -0600
 
-    initialized testBoardDimensions test
-
-commit 4ce0160061593078c86c6a751ce530dccaca29de
-Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Thu Oct 22 15:59:14 2026 -0600
-
-    implemented room setup configurations and one of the JUnit tests
-
-commit bbb64ca6c9fdf078a689cefaedde892f0b285a9b
-Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Wed Oct 21 12:52:22 2026 -0600
-
-    created classes from Clue Init UML
-
+    Added BoardAdjTargetTest306 file for Part 1

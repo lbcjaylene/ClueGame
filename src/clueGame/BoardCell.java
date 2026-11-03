@@ -37,6 +37,7 @@ public class BoardCell {
 		this.roomLabel = false;
 		this.roomCenter = false;
 		this.secretPassage = ' ';
+		this.adjList = new HashSet<>();
 	}
 
 	// getter for the initial of the room
@@ -96,17 +97,11 @@ public class BoardCell {
 
 	// adds a cell to the adjacency list
 	public void addAdjacency(BoardCell cell) {
-		if (adjList == null) {
-			adjList = new HashSet<>();
-		}
 		adjList.add(cell);
 	}
 
 	// returns the adjacency list for this cell
 	public Set<BoardCell> getAdjList() {
-		if (adjList == null) {
-			adjList = new java.util.HashSet<>();
-		}
 		return adjList;
 	}
 

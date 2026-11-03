@@ -247,7 +247,6 @@ class BoardAdjTargetTest {
         assertTrue(targets.contains(board.getCell(6, 6)));
     }
     
-
     // tests movement through a secret passage
     @Test
     public void testSecretPassageTargets() {
@@ -268,20 +267,6 @@ class BoardAdjTargetTest {
         assertTrue(targets.contains(doorway), "Player should be able to leave the room through its doorway");
         assertFalse(targets.contains(start), "Starting room should not be a target");
     }
-
-
-    
-
-
-
-
-
-	
-	
-
-
-	
-	
 	
 }
 
