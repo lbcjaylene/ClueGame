@@ -1,0 +1,43 @@
+LO16P Clue Players 1 Participation Activity
+Selected Method: Check an Accusation [Class: Board]
+
+1. Method Design & Code Skeleton
+--------------------------------------------------
+Function Signature:
+    public boolean checkAccusation(Card room, Card person, Card weapon)
+
+Logic:
+    Compare the accused room, person, and weapon against the predefined solution cards (theAnswer). 
+    Returns true only if all three cards match the solution; otherwise returns false.
+
+Java Skeleton:
+    public boolean checkAccusation(Card room, Card person, Card weapon) {
+        return room.equals(theAnswerRoom) && 
+               person.equals(theAnswerPerson) && 
+               weapon.equals(theAnswerWeapon);
+    }
+
+
+2. Unit Testing Strategy
+--------------------------------------------------
+Tested in BoardTest.java:
+
+Test Case 1: Correct Accusation (All 3 match)
+- Setup Solution: [Library, Mustard, Pipe]
+- Accusation: [Library, Mustard, Pipe]
+- Expected Output: true
+
+Test Case 2: Wrong Person (Room & Weapon match)
+- Setup Solution: [Library, Mustard, Pipe]
+- Accusation: [Library, Scarlet, Pipe]
+- Expected Output: false
+
+Test Case 3: Wrong Room (Person & Weapon match)
+- Setup Solution: [Library, Mustard, Pipe]
+- Accusation: [Kitchen, Mustard, Pipe]
+- Expected Output: false
+
+Test Case 4: Wrong Weapon (Room & Person match)
+- Setup Solution: [Library, Mustard, Pipe]
+- Accusation: [Library, Mustard, Wrench]
+- Expected Output: false
