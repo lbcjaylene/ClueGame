@@ -36,7 +36,6 @@ public class Board {
 
 	// private constructor prevents creating multiple boards
 	private Board() {
-		super();
 	}
 
 	// returns the single instance of Board
