@@ -72,21 +72,27 @@ public class Board {
 		}
 		for (int row = 0; row < numRows; row++) {
 			for (int col = 0; col < numColumns; col++) {
-				BoardCell cell = grid[row][col];
-				if (cell.isRoomCenter()) {
-					addSecretPassage(cell);
-					addRoomDoorways(cell);
-				} else if (cell.isDoorway()) {
-					addWalkwayNeighbors(cell, row, col);
-					addDoorwayRoom(cell, row, col);
-				} else if (cell.isWalkway()) {
-					addWalkwayNeighbors(cell, row, col);
-				}
+				calculateCellAdjacency(row, col);
 			}
 		}
 	}
 	
 	// HELPER FUNCTIONS:
+	
+	
+	// determines adjacency connections based on the cell type
+	private void calculateCellAdjacency(int row, int col) {
+		BoardCell cell = grid[row][col];
+		if (cell.isRoomCenter()) {
+			addSecretPassage(cell);
+			addRoomDoorways(cell);
+		} else if (cell.isDoorway()) {
+			addWalkwayNeighbors(cell, row, col);
+			addDoorwayRoom(cell, row, col);
+		} else if (cell.isWalkway()) {
+			addWalkwayNeighbors(cell, row, col);
+		}
+	}
 	
 	// adds adjacent walkways to a a walkway/doorway cell
 	private void addWalkwayNeighbors(BoardCell cell, int row, int col) {
