@@ -43,7 +43,6 @@ public class Board {
     
 	// private constructor prevents creating multiple boards
 	private Board() {
-		super();
 	}
 	
 	// returns the single instance of Board
@@ -129,6 +128,114 @@ public class Board {
 					Room room = getRoom(cell);
 					if (room != null && room.getCenterCell() != null) {
 						cell.addAdjacency(room.getCenterCell()); // Connect doorway to room center which corresponds to it .     
+=======
+	// calculates the adjacency list for every cell on the board
+	public void calcAdjacencies() {
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				grid[row][col].getAdjList().clear();
+			}
+		}
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				calculateCellAdjacency(row, col);
+			}
+		}
+	}
+	
+	// HELPER FUNCTIONS:
+	
+	
+	// determines adjacency connections based on the cell type
+	private void calculateCellAdjacency(int row, int col) {
+		BoardCell cell = grid[row][col];
+		if (cell.isRoomCenter()) {
+			addSecretPassage(cell);
+			addRoomDoorways(cell);
+		} else if (cell.isDoorway()) {
+			addWalkwayNeighbors(cell, row, col);
+			addDoorwayRoom(cell, row, col);
+		} else if (cell.isWalkway()) {
+			addWalkwayNeighbors(cell, row, col);
+		}
+	}
+	
+	// adds adjacent walkways to a a walkway/doorway cell
+	private void addWalkwayNeighbors(BoardCell cell, int row, int col) {
+		int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+		for (int[] direction : directions) {
+			int newRow = row + direction[0];
+			int newCol = col + direction[1];
+
+			if (isValidCell(newRow, newCol)) {
+				BoardCell neighbor = grid[newRow][newCol];
+
+				if (neighbor.isWalkway()) {
+					cell.addAdjacency(neighbor);
+				}
+			}
+		}
+	}
+
+	// checks whether a row and col are within the board
+	private boolean isValidCell(int row, int col) {
+		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
+	}
+
+	// returns the room that a doorway points towards
+	private Room getDoorwayRoom(BoardCell doorway, int row, int col) {
+		if (!doorway.isDoorway()) {
+			return null;
+		}
+		int roomRow = row;
+		int roomCol = col;
+
+		switch (doorway.getDoorDirection()) {
+		case UP:
+			roomRow--;
+			break;
+		case DOWN:
+			roomRow++;
+			break;
+		case LEFT:
+			roomCol--;
+			break;
+		case RIGHT:
+			roomCol++;
+			break;
+		default:
+			return null;
+		}
+
+		if (!isValidCell(roomRow, roomCol)) {
+			return null;
+		}
+		BoardCell roomCell = grid[roomRow][roomCol];
+		if (roomCell.isWalkway() || roomCell.getInitial() == 'X') {
+			return null;
+		}
+
+		return getRoom(roomCell);
+	}
+
+	// connects a doorway to the center of the room it enters
+	private void addDoorwayRoom(BoardCell doorway, int row, int col) {
+		Room room = getDoorwayRoom(doorway, row, col);
+		if (room != null && room.getCenterCell() != null) {
+			doorway.addAdjacency(room.getCenterCell());
+		}
+	}
+
+	// connects a room center to all doorways entering the room
+	private void addRoomDoorways(BoardCell center) {
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numColumns; col++) {
+				BoardCell cell = grid[row][col];
+				if (cell.isDoorway()) {
+					Room room = getDoorwayRoom(cell, row, col);
+					if (room != null && room.getCenterCell() == center) {
+						center.addAdjacency(cell);
 					}
 				}
 			}

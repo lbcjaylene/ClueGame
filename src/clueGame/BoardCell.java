@@ -16,8 +16,6 @@ import java.util.HashSet;
 
 public class BoardCell {
 
-	private int row;
-	private int col;
 	private char initial;
 	private DoorDirection doorDirection;
 	private boolean roomLabel;
@@ -28,8 +26,6 @@ public class BoardCell {
 
 	// constructor
 	public BoardCell(int row, int col, char initial) {
-		this.row = row;
-		this.col = col;
 		this.initial = initial;
 
 		// default values
