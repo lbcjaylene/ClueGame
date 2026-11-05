@@ -1,44 +1,41 @@
-LO17P Clue Players 2 Participation Activity
-Selected Method: Computer player select a move target [Class: ComputerPlayer]
+LO17P Clue Players 2- In- Class Participation Activity
+Method: Computer player select a move target [Class: ComputerPlayer]
 
-1. Method Design & Code Skeleton
---------------------------------------------------
+1) Method Design And Code 
 Function Signature:
     public BoardCell selectTarget(Set<BoardCell> targets)
 
 Logic:
-    - Inspect the set of target cells available to move to.
-    - If any target cell is an unvisited Room Center, return that room center cell immediately.
-    - Otherwise, randomly pick one cell from the set of targets and return it.
+    - Check the set of target cells whoch are available to move to.
+    - If any target cell is a Room Center that is not visited, return that room center cell immediately.
+    - If not, randomly pick a cell from the set of targets, return it.
 
-Java Skeleton:
+Skeleton Code:
     public BoardCell selectTarget(Set<BoardCell> targets) {
-        // Priority 1: Check for room center
-        for (BoardCell cell : targets) {
+        // Priority 1: Check for Center of Room 
+        for (BoardCell cell:targets) {
             if (cell.isRoomCenter() && !visitedRooms.contains(cell)) {
                 return cell;
             }
         }
         
-        // Priority 2: Pick randomly if no room center
-        List<BoardCell> targetList = new ArrayList<>(targets);
-        int randomIndex = (int)(Math.random() * targetList.size());
+        // Priority 2: Pick randomly if there is no room center
+        List<BoardCell> targetList= new ArrayList<>(targets);
+        int randomIndex= (int)(Math.random()* targetList.size());
         return targetList.get(randomIndex);
     }
 
-
-2. Unit Testing Strategy
---------------------------------------------------
+2) Unit Testing Strategy
 Tested in ComputerPlayerTest.java:
 
-Test Case 1: No Rooms in Target List (Random Selection)
-- Setup: Target list contains 3 standard walkway cells [Cell A, Cell B, Cell C].
-- Expected Output: Selection is made randomly among Cell A, B, and C. (Tested multiple times to confirm distribution).
+Test Case # 1: No Rooms in Target List (Random Selection)
+- Setup: Target list has 3 regular walkway cells [A, B, C].
+- Expected Output: Selection is random with the Cells A, B, and C. (Tested several times to make sure of the distribution).
 
-Test Case 2: Unvisited Room in Target List (Priority Selection)
-- Setup: Target list contains 2 walkway cells and 1 unvisited Room Center cell.
+Test Case # 2: Unvisited Room in Target List (Priority Selection)
+- Setup: Target list has 2 walkway cells and 1 unvisited Room Center cell.
 - Expected Output: Always returns the Room Center cell.
 
-Test Case 3: Already Visited Room in Target List
-- Setup: Target list contains 2 walkway cells and 1 Room Center cell that has already been visited.
+Test Case # 3: Already Visited Room in Target List
+- Setup: Target list has 2 walkway cells and 1 Room Center cell that has already been visited.
 - Expected Output: Selection is made randomly (visited room is treated like a normal target).
