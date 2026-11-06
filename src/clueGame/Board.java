@@ -33,6 +33,7 @@ public class Board {
 	private static Board theInstance = new Board();
 	private Set<BoardCell> targets = new HashSet<>();
 	private Set<BoardCell> visited = new HashSet<>();
+	private List<Player> players = new ArrayList<>();
 
 	// private constructor prevents creating multiple boards
 	private Board() {
@@ -228,11 +229,12 @@ public class Board {
 		return grid[row][col].getAdjList();
 	}
 
-	// loads the room info from the setup file
+	// loads the room, space, and player info from the setup file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 
 		// new map each time we load in setup
 		roomMap = new HashMap<>();
+		players = new ArrayList<>();
 
 		// open the setup config file
 		File file = new File("data/" + setupConfigFile);
@@ -249,31 +251,81 @@ public class Board {
 
 				// separate the line by commas
 				String[] parts = line.split(",", -1);
-
-				// each line should have exactly three parts
-				if (parts.length != 3) {
-					throw new BadConfigFormatException("Invalid setup configuration: " + line);
-				}
-
 				String type = parts[0].trim();
-				String name = parts[1].trim();
-				String initialText = parts[2].trim();
-
-				// check that the initial is one character
-				if (initialText.length() != 1) {
-					throw new BadConfigFormatException("Invalid room initial: " + initialText);
+				
+				// checks whether the entry is a room or space
+				if (type.equals("Room") || type.equals("Space")) {
+					
+					// room and space entries must have 3 fields
+					if (parts.length != 3) {
+						throw new BadConfigFormatException("Invalid setup configuration: " + line);
+					}
+					
+					String name = parts[1].trim();
+					String initialText = parts[2].trim();
+					
+					// checks that the initial is one character
+					if (initialText.length() != 1) {
+						throw new BadConfigFormatException("Invalid room initial: " + initialText);
+					}
+					
+					// checks that the room/space have a name
+					if (name.isEmpty()) {
+						throw new BadConfigFormatException("Invalid setup entry: " + line);
+					}
+					
+					// convert the initial from String to char
+					char initial = initialText.charAt(0);
+					
+					// store the room/space in the map
+					roomMap.put(initial, new Room(name));
 				}
-
-				// check the entry type and room name
-				if ((!type.equals("Room") && !type.equals("Space")) || name.isEmpty()) {
+				else if (type.equals("Player")) {
+					
+					// player entries has to have 6 fields
+					if (parts.length != 6) {
+						throw new BadConfigFormatException("Invalid player configuration: " + line);
+					}
+					
+					// reads the player's info
+					String name = parts[1].trim();
+					String color = parts[2].trim();
+					String playerType = parts[3].trim();
+					
+					// convert the starting row and column to integers
+					int row;
+					int column;
+					
+					try {
+						row = Integer.parseInt(parts[4].trim());
+						column = Integer.parseInt(parts[5].trim());
+					} catch (NumberFormatException e) {
+						throw new BadConfigFormatException(
+						"Invalid player cooordinates: " + line);
+					}
+					
+					// check if the player info is valid
+					if (name.isEmpty() || color.isEmpty() || row < 0 || column < 0) {
+						throw new BadConfigFormatException("Invalid player information: " + line);
+					}
+					
+					// create a human/computer player
+					if (playerType.equals("Human")) {
+						players.add(new HumanPlayer(name, color, row, column));
+					} else if (playerType.equals("Computer")) {
+						players.add(new ComputerPlayer(name, color, row, column));
+					} else {
+						throw new BadConfigFormatException("Invalid player type: " + playerType);
+					}
+				} else if (type.equals("Weapon")) {
+					
+					// weapons has to have 2 fields
+					if (parts.length != 2 || parts[1].trim().isEmpty()) {
+						throw new BadConfigFormatException("Invalid weapon configuration: " + line);
+					}
+				} else {
 					throw new BadConfigFormatException("Invalid setup entry: " + line);
 				}
-
-				// convert the initial from String to char
-				char initial = initialText.charAt(0);
-
-				// store the room in the map
-				roomMap.put(initial, new Room(name));
 			}
 		}
 
@@ -426,6 +478,11 @@ public class Board {
 	// returns the Room object associated with a specific BoardCell
 	public Room getRoom(BoardCell cell) {
 		return roomMap.get(cell.getInitial());
+	}
+	
+	// returns the list of players in the game
+	public List<Player> getPlayers() {
+		return players;
 	}
 
 }

@@ -2,12 +2,29 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 import clueGame.Player;
 import clueGame.HumanPlayer;
 import clueGame.ComputerPlayer;
+import clueGame.Board;
 
 public class GameSetupTests {
+	private static Board board;
+	
+	// initializes the board before running the setup tests
+	@BeforeAll
+	public static void setUp() {
+		board = Board.getInstance();
+		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
+		board.initialize();
+	}
+	
+	// tests that all six players are loaded from the setup file
+	@Test
+	public void testPlayerCount() {
+		assertEquals(6, board.getPlayers().size());
+	}
 
 	// tests that the HumanPlayer is a subclass of Player
 	@Test
