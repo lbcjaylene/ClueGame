@@ -3,24 +3,26 @@
  * 
  * Represents the board using the singleton design patterns.
  * Reads the setup and layout configuration files, creates the board
- * cells, store information about each room, doorway, centers, labels,
- * and the secret passages
+ * cells, store information about each room, doorway, 
+ * centers, labels, and the secret passages
  * 
  * @author Jaylene Khourn, Trisha Varadaraj
  * 
  */
 
 package clueGame;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
-import java.util.HashSet; // NEW 
-
+//import clueGame.Room; // NEW
 public class Board {
 
 	private BoardCell[][] grid;
@@ -33,8 +35,13 @@ public class Board {
 	private Set<BoardCell> targets = new HashSet<>();
 	private Set<BoardCell> visited = new HashSet<>();
 	private List<Player> players = new ArrayList<>();
-	//private List<Card> deck = new ArrayList<>();
-	//private Solution solution;
+	
+	// List to store weapon names from setup file
+	private List<String> weaponList = new ArrayList<>();
+	
+	// Deck of all cards in the game and solution envelope
+	private List<Card> deck = new ArrayList<>();
+	private Solution solution;
 	
 	// private constructor prevents creating multiple boards
 	private Board() {
@@ -61,7 +68,7 @@ public class Board {
 			loadLayoutConfig();
 			calcAdjacencies(); // NEW 
 		}
-		// displays an error if either config files cant be loaded
+		// displays an error if either config files cannot be loaded
 		catch (FileNotFoundException | BadConfigFormatException e) {
 			System.err.println("Error initializing board: " + e.getMessage());
 		}
@@ -235,9 +242,10 @@ public class Board {
 	// loads the room, space, player, and weapon info from the setup file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 
-	    // reset rooms and players before loading
+	    // reset rooms, players, and weapons before loading
 	    roomMap = new HashMap<>();
 	    players = new ArrayList<>();
+	    weaponList = new ArrayList<>();
 
 	    File file = new File("data/" + setupConfigFile);
 
@@ -318,6 +326,8 @@ public class Board {
 	                if (parts.length != 2 || parts[1].trim().isEmpty()) {
 	                    throw new BadConfigFormatException("Invalid weapon configuration: " + line);
 	                }
+	                // store the weapon name in our weapon list
+	                weaponList.add(parts[1].trim());
 	            } else {
 	                throw new BadConfigFormatException("Invalid setup entry: " + line);
 	            }
@@ -429,6 +439,68 @@ public class Board {
 	    }
 	}
 	
+	// builds the deck containing cards for rooms, players, and weapons
+	public void buildDeck() {
+		deck.clear();
+
+		// add playable room cards
+		for (Room room : roomMap.values()) {
+			if (room.isPublicRoom()) {
+				deck.add(new Card(room.getName(), CardType.ROOM));
+			}
+		}
+
+		// add player cards
+		for (Player player : players) {
+			deck.add(new Card(player.getName(), CardType.PERSON));
+		}
+
+		// add weapon cards
+		for (String weapon : weaponList) {
+			deck.add(new Card(weapon, CardType.WEAPON));
+		}
+	}
+
+	// picks the solution cards and deals the rest of the deck to players
+	public void deal() {
+		buildDeck();
+		List<Card> workingDeck = new ArrayList<>(deck);
+		Collections.shuffle(workingDeck);
+
+		Card solutionPerson = null;
+		Card solutionWeapon = null;
+		Card solutionRoom = null;
+
+		// pick 1 person, 1 weapon, and 1 room for the solution
+		for (int i = workingDeck.size() - 1; i >= 0; i--) {
+			Card card = workingDeck.get(i);
+			if (solutionPerson == null && card.getCardType() == CardType.PERSON) {
+				solutionPerson = card;
+				workingDeck.remove(i);
+			} else if (solutionWeapon == null && card.getCardType() == CardType.WEAPON) {
+				solutionWeapon = card;
+				workingDeck.remove(i);
+			} else if (solutionRoom == null && card.getCardType() == CardType.ROOM) {
+				solutionRoom = card;
+				workingDeck.remove(i);
+			}
+		}
+
+		solution = new Solution(solutionPerson, solutionWeapon, solutionRoom);
+
+		// clear player hands before dealing
+		for (Player player : players) {
+			player.clearHand();
+		}
+
+		// deal remaining cards to players in a round-robin fashion
+		int playerIndex = 0;
+		for (Card card : workingDeck) {
+			players.get(playerIndex).updateHand(card);
+			playerIndex = (playerIndex + 1) % players.size();
+		}
+	}
+
 	// returns the total number of rows
 	public int getNumRows() {
 		return numRows;
@@ -460,13 +532,17 @@ public class Board {
 	}
 	
 	// returns the deck of cards
-	//public List<Card> getDeck() {
-	   // return deck;
-	//}
+	public List<Card> getDeck() {
+	    return deck;
+	}
 
 	// returns the solution
-	//public Solution getSolution() {
-	    //return solution;
-	//}
-}
+	public Solution getSolution() {
+	    return solution;
+	}
 
+	// alias getter in case tests look for getAnswer()
+	public Solution getAnswer() {
+	    return solution;
+	}
+}

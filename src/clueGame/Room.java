@@ -45,4 +45,9 @@ public class Room {
 	public void setLabelCell(BoardCell labelCell) {
 		this.labelCell = labelCell;
 	}
+
+	// returns true if this room is a playable room (not a walkway or unused space)
+	public boolean isPublicRoom() {
+		return !name.equals("Unused") && !name.equals("Walkway") && !name.equalsIgnoreCase("Unused Room");
+	}
 }

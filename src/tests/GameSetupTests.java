@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import clueGame.Board;
-//import clueGame.Card;
-//import clueGame.CardType;
+import clueGame.Card;
+import clueGame.CardType;
 import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
-//import clueGame.Solution;
+import clueGame.Solution;
 
 public class GameSetupTests {
 

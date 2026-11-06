@@ -1,5 +1,20 @@
+<<<<<<< Updated upstream
 I, Jaylene Khourn, certify that I participated equitably in the creation of assignment LO15A Refactoring, dated 11/4/26
 I, Trisha Varadaraj, certify that I participated equitably in the creation of this assignment LO15A Reafactoring, dated 11/4/26.
+=======
+commit 776bdadbad058e7dd5d6ae3f8bd054840bc382e9
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Mon Oct 19 21:29:06 2026 -0600
+
+    Completed
+
+ gitlog.txt | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+commit d3a0d610a425631411f5f091c7debc62ec491638
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Mon Oct 19 21:28:13 2026 -0600
+>>>>>>> Stashed changes
 
 
 commit 990db6c2115f18f27b696337c10da0fb18c71f5b
