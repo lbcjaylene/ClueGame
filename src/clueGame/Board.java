@@ -79,7 +79,6 @@ public class Board {
 	
 	// HELPER FUNCTIONS:
 	
-	
 	// determines adjacency connections based on the cell type
 	private void calculateCellAdjacency(int row, int col) {
 		BoardCell cell = grid[row][col];

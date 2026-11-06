@@ -1,17 +1,33 @@
-commit 5000cc1b3f52be10acbe97bd1d96c26e472f1abb
+I, Jaylene Khourn, certify that I participated equitably in the creation of assignment LO15A Refactoring, dated 11/4/26
+I, Trisha Varadaraj, certify that I participated equitably in the creation of this assignment LO15A Reafactoring, dated 11/4/26.
+
+
+commit 990db6c2115f18f27b696337c10da0fb18c71f5b
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Fri Oct 30 01:19:06 2026 -0600
+Date:   Wed Nov 4 12:27:44 2026 -0700
 
-    finished BoardAdjTargetTest.java, added comments, refactored class files
+    extracted the cell adjacency calculation into a helper method to condense the calcAdjacency() method
 
-commit b7b0298bc5d5cef5404bae11ecd848ea5936cb0a
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Thu Oct 29 10:59:09 2026 -0600
+commit bda46aadc06db7d08d7fc40cfe5ca15551c37eca
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Wed Nov 4 12:22:59 2026 -0700
 
-    Finalized Board engine logic for adgacencies And Targets (More Comments Needed)
+    removed the redundant constructor call and unused cell fields
 
-commit 088bb6f8007a030ace4111f10c3e4794fd23a6fb
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Thu Oct 29 10:32:14 2026 -0600
+commit 60a7b8b728f84022c8a1f1d37f19bcd62d541ba5
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Tue Nov 3 13:20:23 2026 -0700
 
-    Added BoardAdjTargetTest306 file for Part 1
+    extracted room cell configuration into another helper method
+
+commit 35101f2192b9736f3fd51606db8bbea90b167056
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Tue Nov 3 13:06:41 2026 -0700
+
+    extracted door direction logic into a helper method
+
+commit 764be43a08ba0ee717b90448bf72cb216068efc5
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Tue Nov 3 12:58:35 2026 -0700
+
+    Refactored BoardCell adjacency list initialization

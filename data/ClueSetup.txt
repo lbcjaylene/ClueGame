@@ -11,3 +11,17 @@ Room, End City, D
 // Board spaces
 Space, Walkway, W
 Space, Unused, X
+// Players
+Player, Steve, Blue, Human, 0, 5
+Player, Alex, Orange, Computer, 0, 17
+Player, Villager, Green, Computer, 8, 0
+Player, Enderman, Purple, Computer, 8, 22
+Player, Creeper, Red, Computer, 21, 5
+Player, Zombie, Gray, Computer, 21, 17
+// Weapons
+Weapon, Diamond Sword
+Weapon, Bow
+Weapon, Trident
+Weapon, Crossbow
+Weapon, Iron Axe
+Weapon, Mace
