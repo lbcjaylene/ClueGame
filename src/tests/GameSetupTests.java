@@ -75,6 +75,23 @@ public class GameSetupTests {
 	    assertEquals(1, humanCount);
 	    assertEquals(5, computerCount);
 	}
+	
+	// tests that player info is loaded correctly from setup file
+	@Test
+	public void testPlayerInformation() {
+		
+		// get the first player loaded from the setup file
+	    Player player = board.getPlayers().get(0);
+
+	    // verify Steve's name, color, and starting location
+	    assertEquals("Steve", player.getName());
+	    assertEquals("Blue", player.getColor());
+	    assertEquals(0, player.getRow());
+	    assertEquals(5, player.getColumn());
+
+	    // verify Steve is the human-controlled player
+	    assertTrue(player instanceof HumanPlayer);
+	}
 
 
 }
