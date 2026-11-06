@@ -44,4 +44,5 @@ public abstract class Player {
 	public int getColumn() {
 		return column;
 	}
+	
 }
