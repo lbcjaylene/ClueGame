@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import clueGame.Player;
 import clueGame.HumanPlayer;
+import clueGame.ComputerPlayer;
 
 public class GameSetupTests {
 
