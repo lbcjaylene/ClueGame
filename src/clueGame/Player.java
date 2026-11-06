@@ -8,6 +8,7 @@
  * @author Jaylene Khourn, Trisha Varadaraj
  * 
  */
+
 package clueGame;
 
 import java.util.ArrayList;
@@ -18,8 +19,6 @@ public abstract class Player {
     private String color;
     private int row;
     private int column;
-    
-    // Hand holding cards dealt to this player
     protected List<Card> hand = new ArrayList<>();
 
     // constructor initializes the player's info

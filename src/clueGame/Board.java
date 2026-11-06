@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-//import clueGame.Room; // NEW
-public class Board {
 
+public class Board {
+	
 	private BoardCell[][] grid;
 	private int numRows;
 	private int numColumns;
@@ -35,11 +35,7 @@ public class Board {
 	private Set<BoardCell> targets = new HashSet<>();
 	private Set<BoardCell> visited = new HashSet<>();
 	private List<Player> players = new ArrayList<>();
-	
-	// List to store weapon names from setup file
 	private List<String> weaponList = new ArrayList<>();
-	
-	// Deck of all cards in the game and solution envelope
 	private List<Card> deck = new ArrayList<>();
 	private Solution solution;
 	
@@ -60,19 +56,19 @@ public class Board {
 	
 	// initializes the board
 	public void initialize() { 
-		// NEW 
-		
+
 		// loads the room info before we create the board layout
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
-			calcAdjacencies(); // NEW 
+			calcAdjacencies();
+			buildDeck();
 		}
+		
 		// displays an error if either config files cannot be loaded
 		catch (FileNotFoundException | BadConfigFormatException e) {
 			System.err.println("Error initializing board: " + e.getMessage());
 		}
-		
 	}
 
 	// calculates the adjacency list for every cell on the board
@@ -90,6 +86,20 @@ public class Board {
 	}
 	
 	// HELPER FUNCTIONS:
+	
+	// determines adjacency connections based on the cell type
+		private void calculateCellAdjacency(int row, int col) {
+			BoardCell cell = grid[row][col];
+			if (cell.isRoomCenter()) {
+				addSecretPassage(cell);
+				addRoomDoorways(cell);
+			} else if (cell.isDoorway()) {
+				addWalkwayNeighbors(cell, row, col);
+				addDoorwayRoom(cell, row, col);
+			} else if (cell.isWalkway()) {
+				addWalkwayNeighbors(cell, row, col);
+			}
+		}
 
 	// connects a room center to its secret passage destination
 	private void addSecretPassage(BoardCell center) {
@@ -112,20 +122,6 @@ public class Board {
 	        }
 	    }
 	}
-
-	// determines adjacency connections based on the cell type
-	private void calculateCellAdjacency(int row, int col) {
-		BoardCell cell = grid[row][col];
-		if (cell.isRoomCenter()) {
-			addSecretPassage(cell);
-			addRoomDoorways(cell);
-		} else if (cell.isDoorway()) {
-			addWalkwayNeighbors(cell, row, col);
-			addDoorwayRoom(cell, row, col);
-		} else if (cell.isWalkway()) {
-			addWalkwayNeighbors(cell, row, col);
-		}
-	}
 	
 	// adds adjacent walkways to a a walkway/doorway cell
 	private void addWalkwayNeighbors(BoardCell cell, int row, int col) {
@@ -142,11 +138,6 @@ public class Board {
 				}
 			}
 		}
-	}
-
-	// checks whether a row and col are within the board
-	private boolean isValidCell(int row, int col) {
-		return row >= 0 && row < numRows && col >= 0 && col < numColumns;
 	}
 
 	// returns the room that a doorway points towards
@@ -179,9 +170,13 @@ public class Board {
 		if (roomCell.isWalkway() || roomCell.getInitial() == 'X') {
 			return null;
 		}
-
 		return getRoom(roomCell);
 	}
+	
+	// checks whether a row and col are within the board
+		private boolean isValidCell(int row, int col) {
+			return row >= 0 && row < numRows && col >= 0 && col < numColumns;
+		}
 
 	// connects a doorway to the center of the room it enters
 	private void addDoorwayRoom(BoardCell doorway, int row, int col) {
@@ -206,6 +201,7 @@ public class Board {
 		}
 	}
 
+	// calculates the possible movement targets from a starting cell
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited.clear();
 		targets.clear();
@@ -213,32 +209,31 @@ public class Board {
 		findAllTargets(startCell, pathLength);
 	}
 
+	// recursively finds all possible movement targets
 	private void findAllTargets(BoardCell currentCell, int numSteps) {
 		for (BoardCell neighbor : currentCell.getAdjList()) {
+			
+			// skips cells that have already been visited
 			if (visited.contains(neighbor)) continue;
+			
+			// skip occupied walkways
 			if (neighbor.isOccupied() && !neighbor.isRoomCenter()) continue;
-
 			visited.add(neighbor);
-
+			
+			// add target if no steps remain or a room is reached
 			if (numSteps == 1 || neighbor.isRoomCenter()) {
 				targets.add(neighbor);
 			} else {
+				
+				// continue searching with one less step
 				findAllTargets(neighbor, numSteps - 1);
 			}
-
+			
+			// remove cell so it can be used in another path
 			visited.remove(neighbor);
 		}
 	}
-
-	public Set<BoardCell> getTargets() {
-		return targets;
-	}
-
-	public Set<BoardCell> getAdjList(int row, int col) {
-		return grid[row][col].getAdjList();
-	}
 	
-
 	// loads the room, space, player, and weapon info from the setup file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 
@@ -246,9 +241,7 @@ public class Board {
 	    roomMap = new HashMap<>();
 	    players = new ArrayList<>();
 	    weaponList = new ArrayList<>();
-
 	    File file = new File("data/" + setupConfigFile);
-
 	    try (Scanner scanner = new Scanner(file)) {
 
 	        // read each line in the setup file
@@ -266,11 +259,9 @@ public class Board {
 
 	            // load rooms and spaces
 	            if (type.equals("Room") || type.equals("Space")) {
-
 	                if (parts.length != 3) {
 	                    throw new BadConfigFormatException("Invalid setup configuration: " + line);
 	                }
-
 	                String name = parts[1].trim();
 	                String initialText = parts[2].trim();
 
@@ -278,26 +269,22 @@ public class Board {
 	                if (name.isEmpty() || initialText.length() != 1) {
 	                    throw new BadConfigFormatException("Invalid room information: " + line);
 	                }
-
 	                char initial = initialText.charAt(0);
 
 	                // store the room or space
 	                roomMap.put(initial, new Room(name));
-
 	            } else if (type.equals("Player")) {
 
 	                // player entries must have six fields
 	                if (parts.length != 6) {
 	                    throw new BadConfigFormatException("Invalid player configuration: " + line);
 	                }
-
 	                String name = parts[1].trim();
 	                String color = parts[2].trim();
 	                String playerType = parts[3].trim();
-
 	                int row;
 	                int column;
-
+	                
 	                // convert starting location to integers
 	                try {
 	                    row = Integer.parseInt(parts[4].trim());
@@ -319,13 +306,13 @@ public class Board {
 	                } else {
 	                    throw new BadConfigFormatException("Invalid player type: " + playerType);
 	                }
-
 	            } else if (type.equals("Weapon")) {
 
 	                // weapon entries must have two fields
 	                if (parts.length != 2 || parts[1].trim().isEmpty()) {
 	                    throw new BadConfigFormatException("Invalid weapon configuration: " + line);
 	                }
+	                
 	                // store the weapon name in our weapon list
 	                weaponList.add(parts[1].trim());
 	            } else {
@@ -386,7 +373,6 @@ public class Board {
 	    }
 	}
 	
-
 	// configures the room center, label, passage, and doorway
 	private void configureCell(BoardCell cell, String cellData) {
 	    char initial = cell.getInitial();
@@ -466,7 +452,6 @@ public class Board {
 		buildDeck();
 		List<Card> workingDeck = new ArrayList<>(deck);
 		Collections.shuffle(workingDeck);
-
 		Card solutionPerson = null;
 		Card solutionWeapon = null;
 		Card solutionRoom = null;
@@ -485,7 +470,6 @@ public class Board {
 				workingDeck.remove(i);
 			}
 		}
-
 		solution = new Solution(solutionPerson, solutionWeapon, solutionRoom);
 
 		// clear player hands before dealing
@@ -544,5 +528,15 @@ public class Board {
 	// alias getter in case tests look for getAnswer()
 	public Solution getAnswer() {
 	    return solution;
+	}
+	
+	// returns the set of possible movement targets
+	public Set<BoardCell> getTargets() {
+		return targets;
+	}
+
+	// returns the adjacent cells for the given row and column
+	public Set<BoardCell> getAdjList(int row, int col) {
+		return grid[row][col].getAdjList();
 	}
 }
