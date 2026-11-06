@@ -15,6 +15,13 @@ public class GameSetupTests {
 		assertTrue(player instanceof HumanPlayer);
 	}
 	
+	// tests that ComputerPlayer inherits from Player
+	@Test
+	public void testComputerPlayer() {
+		Player player = new ComputerPlayer();
+		assertTrue(player instanceof ComputerPlayer);
+	}
+	
 	
 
 }
