@@ -83,17 +83,29 @@ public class Board {
 	}
 	
 	// HELPER FUNCTIONS:
-	
+
 	// connects a room center to its secret passage destination
-	private void addSecretPassage(BoardCell cell) {
-	    if (cell.getSecretPassage() != ' ') {
-	        Room targetRoom = roomMap.get(cell.getSecretPassage());
-	        if (targetRoom != null && targetRoom.getCenterCell() != null) {
-	            cell.addAdjacency(targetRoom.getCenterCell());
+	private void addSecretPassage(BoardCell center) {
+
+	    // search the board for secret passages belonging to this room
+	    for (int row = 0; row < numRows; row++) {
+	        for (int col = 0; col < numColumns; col++) {
+	            BoardCell cell = grid[row][col];
+
+	            // check that the passage belongs to this room
+	            if (cell.getInitial() == center.getInitial() && cell.getSecretPassage() != ' ') {
+	                char destination = cell.getSecretPassage();
+	                Room targetRoom = roomMap.get(destination);
+
+	                // connect the room centers
+	                if (targetRoom != null && targetRoom.getCenterCell() != null) {
+	                    center.addAdjacency(targetRoom.getCenterCell());
+	                }
+	            }
 	        }
 	    }
 	}
-	
+
 	// determines adjacency connections based on the cell type
 	private void calculateCellAdjacency(int row, int col) {
 		BoardCell cell = grid[row][col];
@@ -315,120 +327,106 @@ public class Board {
 	
 	// loads in the board layout
 	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException {
-		
-		// temporarily stores each row of the layout
-		List<String[]> rows = new ArrayList<>();
-		
-		// opens the layout file from the data folder
-		File file = new File("data/" + layoutConfigFile);
-		try (Scanner scanner = new Scanner(file)) {
-			
-			// read each row of the file
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine().trim();
-				
-				// skip any empty lines
-				if (line.isEmpty()) {
-					continue;
-				}
-				
-				// split the row into individual cells
-				String[] cells = line.split(",", -1);
-				rows.add(cells);
-			}
-		}
-		
-		// determine the number of rows in the board
-		numRows = rows.size();
-		
-		// making sure the file is not empty
-		if(numRows == 0) {
-			throw new BadConfigFormatException("Layout file is empty.");
-		}
-		
-		// determine the number of columns by using the first row
-		numColumns = rows.get(0).length;
-		
-		// check every row that has the same number of columns
-		for (String[] row : rows) {
-		    if (row.length != numColumns) {
-		        throw new BadConfigFormatException("Layout rows have inconsistent columns.");
-		    }
-		}
-		
-		// create grid for board
-		grid = new BoardCell[numRows][numColumns];
-		
-		// loop through every row in the board
-		for (int row = 0; row < numRows; row++) {
-			String[] cells = rows.get(row);
-			
-			// loop through every column in the current row
-			for (int col = 0; col < numColumns; col++) {
-				
-				// remove whitespace
-				String cellData = cells[col].trim();
+	    List<String[]> rows = new ArrayList<>();
+	    File file = new File("data/" + layoutConfigFile);
 
-				// check for empty cells before reading the initial
-				if (cellData.isEmpty()) {
-				    throw new BadConfigFormatException("Empty cell at row " + row + ", column " + col);
-				}
+	    // read the layout file
+	    try (Scanner scanner = new Scanner(file)) {
+	        while (scanner.hasNextLine()) {
+	            String line = scanner.nextLine().trim();
+	            if (line.isEmpty()) {
+	                continue;
+	            }
+	            rows.add(line.split(",", -1));
+	        }
+	    }
 
-				// first char represents the room
-				char initial = cellData.charAt(0);
-				
-				// making sure the initial exists in the setup
-				if (!roomMap.containsKey(initial)) {
-				    throw new BadConfigFormatException("Undefined room initial: " + initial);
-				}
-				
-				// create a BoardCell at this pos
-				grid[row][col] = new BoardCell(row, col, initial);
-				
-				// checks if this cell contains a secret passage
-				if (cellData.length() == 2 && Character.isUpperCase(cellData.charAt(1))) {
-				    grid[row][col].setSecretPassage(cellData.charAt(1));
-				}
-				
-				// the asterisk identifies the center of a room
-				if (cellData.contains("*")) {
-				    grid[row][col].setRoomCenter(true);
-				    
-				    // stores this cell as the room's center
-				    roomMap.get(initial).setCenterCell(grid[row][col]);
-				}
-				
-				// the hashtag identifies the label position of a room
-				if (cellData.contains("#")) {
-				    grid[row][col].setRoomLabel(true);
-				    
-				    // stores this cell as the room's label
-				    roomMap.get(initial).setLabelCell(grid[row][col]);
-				}
-				
-				// check for additional symbols after the room initial
-				if (cellData.length() > 1) {
-					char symbol = cellData.charAt(1);
-					
-					// based on its symbol, assign the doorway direction
-					switch(symbol) {
-					case '^':
-						grid[row][col].setDoorDirection(DoorDirection.UP);
-						break;
-					case 'v':
-						grid[row][col].setDoorDirection(DoorDirection.DOWN);
-						break;
-					case '<':
-						grid[row][col].setDoorDirection(DoorDirection.LEFT);
-						break;
-					case '>':
-						grid[row][col].setDoorDirection(DoorDirection.RIGHT);
-						break;
-					}
-				}
-			}
-		}
-		
+	    // check that the layout is not empty
+	    numRows = rows.size();
+	    if (numRows == 0) {
+	        throw new BadConfigFormatException("Layout file is empty.");
+	    }
+	    numColumns = rows.get(0).length;
+	    
+	    // check that every row has the same number of columns
+	    for (String[] row : rows) {
+	        if (row.length != numColumns) {
+	            throw new BadConfigFormatException("Layout rows have inconsistent columns.");
+	        }
+	    }
+
+	    // create the board grid
+	    grid = new BoardCell[numRows][numColumns];
+
+	    // create and configure each cell
+	    for (int row = 0; row < numRows; row++) {
+	        for (int col = 0; col < numColumns; col++) {
+	            String cellData = rows.get(row)[col].trim();
+	            if (cellData.isEmpty()) {
+	                throw new BadConfigFormatException("Empty cell at row " + row + ", column " + col);
+	            }
+	            char initial = cellData.charAt(0);
+	            if (!roomMap.containsKey(initial)) {
+	                throw new BadConfigFormatException("Undefined room initial: " + initial);
+	            }
+	            BoardCell cell = new BoardCell(row, col, initial);
+	            grid[row][col] = cell;
+	            configureCell(cell, cellData);
+	        }
+	    }
+	}
+	
+
+	// configures the room center, label, passage, and doorway
+	private void configureCell(BoardCell cell, String cellData) {
+	    char initial = cell.getInitial();
+	    Room room = roomMap.get(initial);
+	    
+	    // check for a secret passage
+	    if (cellData.length() == 2 && Character.isUpperCase(cellData.charAt(1))) {
+	        cell.setSecretPassage(cellData.charAt(1));
+	    }
+
+	    // identify the room center
+	    if (cellData.contains("*")) {
+	        cell.setRoomCenter(true);
+	        room.setCenterCell(cell);
+	    }
+
+	    // identify the room label
+	    if (cellData.contains("#")) {
+	        cell.setRoomLabel(true);
+	        room.setLabelCell(cell);
+	    }
+
+	    // identify doorway direction
+	    if (cellData.length() > 1) {
+	        setDoorDirection(cell, cellData.charAt(1));
+	    }
+	}
+
+	// sets the doorway direction based on the layout symbol
+	private void setDoorDirection(BoardCell cell, char symbol) {
+	    switch (symbol) {
+	        case '^':
+	            cell.setDoorDirection(DoorDirection.UP);
+	            break;
+
+	        case 'v':
+	            cell.setDoorDirection(DoorDirection.DOWN);
+	            break;
+
+	        case '<':
+	            cell.setDoorDirection(DoorDirection.LEFT);
+	            break;
+
+	        case '>':
+	            cell.setDoorDirection(DoorDirection.RIGHT);
+	            break;
+
+	        default:
+	            break;
+	    }
 	}
 	
 	// returns the total number of rows
