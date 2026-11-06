@@ -56,5 +56,25 @@ public class GameSetupTests {
 		assertEquals(5, player.getColumn());
 	}
 	
+	// tests that one human and five computer players are loaded
+	@Test
+	public void testPlayerTypes() {
+		int humanCount = 0;
+		int computerCount = 0;
+		
+		// count the number of each player type
+		for (Player player : board.getPlayers()) {
+	        if (player instanceof HumanPlayer) {
+	            humanCount++;
+	        } else if (player instanceof ComputerPlayer) {
+	            computerCount++;
+	        }
+	    }
+
+	    // verify the correct number of each player type
+	    assertEquals(1, humanCount);
+	    assertEquals(5, computerCount);
+	}
+
 
 }
