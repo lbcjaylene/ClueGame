@@ -1,13 +1,14 @@
 /*
- * Board Class
- * 
- * Represents the board using the singleton design patterns.
- * Reads the setup and layout configuration files, creates the board
- * cells, store information about each room, doorway, 
- * centers, labels, and the secret passages
- * 
- * @author Jaylene Khourn, Trisha Varadaraj
- * 
+- Board Class
+- 
+- Represents the board using the singleton design patterns.
+- Reads the setup and layout configuration files, creates the board
+- cells, store information about each room, doorway, 
+- centers, labels, and the secret passages
+- 
+- @author 
+Jaylene Khourn, Trisha Varadaraj
+- 
  */
 
 package clueGame;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-//import clueGame.Room; // NEW
+
 public class Board {
 
 	private BoardCell[][] grid;
@@ -43,6 +44,19 @@ public class Board {
 	private List<Card> deck = new ArrayList<>();
 	private Solution solution;
 	
+	// Setters and Getters for Testing
+	public void setTheAnswer(Solution answer) { 
+		this.solution = answer; 
+	}
+	
+	public void setPlayers(List<Player> players) { 
+		this.players = players; 
+	}
+	
+	public void setDeck(List<Card> deck) { 
+		this.deck = deck; 
+	}
+	
 	// private constructor prevents creating multiple boards
 	private Board() {
 	}
@@ -60,19 +74,50 @@ public class Board {
 	
 	// initializes the board
 	public void initialize() { 
-		// NEW 
-		
 		// loads the room info before we create the board layout
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
-			calcAdjacencies(); // NEW 
+			calcAdjacencies(); 
 		}
 		// displays an error if either config files cannot be loaded
 		catch (FileNotFoundException | BadConfigFormatException e) {
 			System.err.println("Error initializing board: " + e.getMessage());
 		}
+	}
+
+	/**
+	 * Checks if an accusation matches the secret solution envelope.
+	 */
+	public boolean checkAccusation(Solution accusation) {
+		if (solution == null || accusation == null) {
+			return false;
+		}
+		return accusation.getPerson().equals(solution.getPerson()) &&
+			   accusation.getWeapon().equals(solution.getWeapon()) &&
+			   accusation.getRoom().equals(solution.getRoom());
+	}
+
+	/**
+	 * Processes players in turn order (starting with player after accuser)
+	 * to see if anyone can disprove a suggestion.
+	 */
+	public Card handleSuggestion(Solution suggestion, Player accuser) {
+		int accuserIndex = players.indexOf(accuser);
+		if (accuserIndex == -1) {
+			return null;
+		}
 		
+		int numPlayers = players.size();
+		for (int i = 1; i < numPlayers; i++) {
+			int currentIndex = (accuserIndex + i) % numPlayers;
+			Player player = players.get(currentIndex);
+			Card disprovedCard = player.disproveSuggestion(suggestion);
+			if (disprovedCard != null) {
+				return disprovedCard;
+			}
+		}
+		return null;
 	}
 
 	// calculates the adjacency list for every cell on the board
@@ -93,7 +138,6 @@ public class Board {
 
 	// connects a room center to its secret passage destination
 	private void addSecretPassage(BoardCell center) {
-
 	    // search the board for secret passages belonging to this room
 	    for (int row = 0; row < numRows; row++) {
 	        for (int col = 0; col < numColumns; col++) {
@@ -127,7 +171,7 @@ public class Board {
 		}
 	}
 	
-	// adds adjacent walkways to a a walkway/doorway cell
+	// adds adjacent walkways to a walkway/doorway cell
 	private void addWalkwayNeighbors(BoardCell cell, int row, int col) {
 		int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
 		for (int[] direction : directions) {
@@ -238,7 +282,6 @@ public class Board {
 		return grid[row][col].getAdjList();
 	}
 	
-
 	// loads the room, space, player, and weapon info from the setup file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 
@@ -250,21 +293,16 @@ public class Board {
 	    File file = new File("data/" + setupConfigFile);
 
 	    try (Scanner scanner = new Scanner(file)) {
-
-	        // read each line in the setup file
 	        while (scanner.hasNextLine()) {
 	            String line = scanner.nextLine().trim();
 
-	            // skip empty lines and comments
 	            if (line.isEmpty() || line.startsWith("//")) {
 	                continue;
 	            }
 
-	            // separate the line by commas
 	            String[] parts = line.split(",", -1);
 	            String type = parts[0].trim();
 
-	            // load rooms and spaces
 	            if (type.equals("Room") || type.equals("Space")) {
 
 	                if (parts.length != 3) {
@@ -274,19 +312,15 @@ public class Board {
 	                String name = parts[1].trim();
 	                String initialText = parts[2].trim();
 
-	                // check the room name and initial
 	                if (name.isEmpty() || initialText.length() != 1) {
 	                    throw new BadConfigFormatException("Invalid room information: " + line);
 	                }
 
 	                char initial = initialText.charAt(0);
-
-	                // store the room or space
 	                roomMap.put(initial, new Room(name));
 
 	            } else if (type.equals("Player")) {
 
-	                // player entries must have six fields
 	                if (parts.length != 6) {
 	                    throw new BadConfigFormatException("Invalid player configuration: " + line);
 	                }
@@ -298,7 +332,6 @@ public class Board {
 	                int row;
 	                int column;
 
-	                // convert starting location to integers
 	                try {
 	                    row = Integer.parseInt(parts[4].trim());
 	                    column = Integer.parseInt(parts[5].trim());
@@ -306,12 +339,10 @@ public class Board {
 	                    throw new BadConfigFormatException("Invalid player coordinates: " + line);
 	                }
 
-	                // check the player information
 	                if (name.isEmpty() || color.isEmpty() || row < 0 || column < 0) {
 	                    throw new BadConfigFormatException("Invalid player information: " + line);
 	                }
 
-	                // create a human or computer player
 	                if (playerType.equals("Human")) {
 	                    players.add(new HumanPlayer(name, color, row, column));
 	                } else if (playerType.equals("Computer")) {
@@ -322,11 +353,9 @@ public class Board {
 
 	            } else if (type.equals("Weapon")) {
 
-	                // weapon entries must have two fields
 	                if (parts.length != 2 || parts[1].trim().isEmpty()) {
 	                    throw new BadConfigFormatException("Invalid weapon configuration: " + line);
 	                }
-	                // store the weapon name in our weapon list
 	                weaponList.add(parts[1].trim());
 	            } else {
 	                throw new BadConfigFormatException("Invalid setup entry: " + line);
@@ -340,7 +369,6 @@ public class Board {
 	    List<String[]> rows = new ArrayList<>();
 	    File file = new File("data/" + layoutConfigFile);
 
-	    // read the layout file
 	    try (Scanner scanner = new Scanner(file)) {
 	        while (scanner.hasNextLine()) {
 	            String line = scanner.nextLine().trim();
@@ -351,24 +379,20 @@ public class Board {
 	        }
 	    }
 
-	    // check that the layout is not empty
 	    numRows = rows.size();
 	    if (numRows == 0) {
 	        throw new BadConfigFormatException("Layout file is empty.");
 	    }
 	    numColumns = rows.get(0).length;
 	    
-	    // check that every row has the same number of columns
 	    for (String[] row : rows) {
 	        if (row.length != numColumns) {
 	            throw new BadConfigFormatException("Layout rows have inconsistent columns.");
 	        }
 	    }
 
-	    // create the board grid
 	    grid = new BoardCell[numRows][numColumns];
 
-	    // create and configure each cell
 	    for (int row = 0; row < numRows; row++) {
 	        for (int col = 0; col < numColumns; col++) {
 	            String cellData = rows.get(row)[col].trim();
@@ -386,36 +410,30 @@ public class Board {
 	    }
 	}
 	
-
 	// configures the room center, label, passage, and doorway
 	private void configureCell(BoardCell cell, String cellData) {
 	    char initial = cell.getInitial();
 	    Room room = roomMap.get(initial);
 	    
-	    // check for a secret passage
 	    if (cellData.length() == 2 && Character.isUpperCase(cellData.charAt(1))) {
 	        cell.setSecretPassage(cellData.charAt(1));
 	    }
 
-	    // identify the room center
 	    if (cellData.contains("*")) {
 	        cell.setRoomCenter(true);
 	        room.setCenterCell(cell);
 	    }
 
-	    // identify the room label
 	    if (cellData.contains("#")) {
 	        cell.setRoomLabel(true);
 	        room.setLabelCell(cell);
 	    }
 
-	    // identify doorway direction
 	    if (cellData.length() > 1) {
 	        setDoorDirection(cell, cellData.charAt(1));
 	    }
 	}
 
-	// sets the doorway direction based on the layout symbol
 	private void setDoorDirection(BoardCell cell, char symbol) {
 	    switch (symbol) {
 	        case '^':
@@ -443,19 +461,16 @@ public class Board {
 	public void buildDeck() {
 		deck.clear();
 
-		// add playable room cards
 		for (Room room : roomMap.values()) {
 			if (room.isPublicRoom()) {
 				deck.add(new Card(room.getName(), CardType.ROOM));
 			}
 		}
 
-		// add player cards
 		for (Player player : players) {
 			deck.add(new Card(player.getName(), CardType.PERSON));
 		}
 
-		// add weapon cards
 		for (String weapon : weaponList) {
 			deck.add(new Card(weapon, CardType.WEAPON));
 		}
@@ -471,7 +486,6 @@ public class Board {
 		Card solutionWeapon = null;
 		Card solutionRoom = null;
 
-		// pick 1 person, 1 weapon, and 1 room for the solution
 		for (int i = workingDeck.size() - 1; i >= 0; i--) {
 			Card card = workingDeck.get(i);
 			if (solutionPerson == null && card.getCardType() == CardType.PERSON) {
@@ -488,12 +502,10 @@ public class Board {
 
 		solution = new Solution(solutionPerson, solutionWeapon, solutionRoom);
 
-		// clear player hands before dealing
 		for (Player player : players) {
 			player.clearHand();
 		}
 
-		// deal remaining cards to players in a round-robin fashion
 		int playerIndex = 0;
 		for (Card card : workingDeck) {
 			players.get(playerIndex).updateHand(card);
@@ -501,47 +513,38 @@ public class Board {
 		}
 	}
 
-	// returns the total number of rows
 	public int getNumRows() {
 		return numRows;
 	}
 	
-	// returns the total number of columns
 	public int getNumColumns() {
 		return numColumns;
 	}
 	
-	// returns the BoardCell at the specified row/col	
 	public BoardCell getCell(int row, int col) {
 		return grid[row][col];
 	}
 	
-	// returns a Room object using the character initial
 	public Room getRoom(char initial) {
 		return roomMap.get(initial);
 	}
 	
-	// returns the Room object associated with a specific BoardCell
 	public Room getRoom(BoardCell cell) {
 		return roomMap.get(cell.getInitial());
 	}
 
-	// returns the list of players in the game
 	public List<Player> getPlayers() {
 		return players;
 	}
 	
-	// returns the deck of cards
 	public List<Card> getDeck() {
 	    return deck;
 	}
 
-	// returns the solution
 	public Solution getSolution() {
 	    return solution;
 	}
 
-	// alias getter in case tests look for getAnswer()
 	public Solution getAnswer() {
 	    return solution;
 	}

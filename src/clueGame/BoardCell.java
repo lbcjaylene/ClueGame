@@ -11,108 +11,123 @@
 
 package clueGame;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class BoardCell {
 
-	private char initial;
-	private DoorDirection doorDirection;
-	private boolean roomLabel;
-	private boolean roomCenter;
-	private char secretPassage;
-	private Set<BoardCell> adjList;
-	private boolean occupied = false;
+    private int row;
+    private int col;
+    private char initial;
+    private DoorDirection doorDirection;
+    private boolean roomLabel;
+    private boolean roomCenter;
+    private char secretPassage;
+    private Set<BoardCell> adjList;
+    private boolean occupied = false;
+    private Card roomCard; // Used for testing target selection
 
-	// constructor
-	public BoardCell(int row, int col, char initial) {
-		this.initial = initial;
+    // Main constructor used by Board layout loader
+    public BoardCell(int row, int col, char initial) {
+        this.row = row;
+        this.col = col;
+        this.initial = initial;
 
-		// default values
-		this.doorDirection = DoorDirection.NONE;
-		this.roomLabel = false;
-		this.roomCenter = false;
-		this.secretPassage = ' ';
-		this.adjList = new HashSet<>();
-	}
+        this.doorDirection = DoorDirection.NONE;
+        this.roomLabel = false;
+        this.roomCenter = false;
+        this.secretPassage = ' ';
+        this.adjList = new HashSet<>();
+    }
 
-	// getter for the initial of the room
-	public char getInitial() {
-		return initial;
-	}
+    // Secondary constructor for standalone AI unit testing
+    public BoardCell(int row, int col, Card roomCard) {
+        this(row, col, 'R');
+        this.roomCard = roomCard;
+        this.roomCenter = true;
+    }
 
-	// checks if the cell contains a doorway
-	public boolean isDoorway() {
-		return doorDirection != DoorDirection.NONE;
-	}
+    public int getRow() {
+        return row;
+    }
 
-	// returns the direction of the doorway
-	public DoorDirection getDoorDirection() {
-		return doorDirection;
-	}
+    public int getCol() {
+        return col;
+    }
 
-	// sets the direction of the doorway
-	public void setDoorDirection(DoorDirection direction) {
-		this.doorDirection = direction;
-	}
+    public char getInitial() {
+        return initial;
+    }
 
-	// checks if the cell is the center of a room
-	public boolean isRoomCenter() {
-		return roomCenter;
-	}
+    public boolean isDoorway() {
+        return doorDirection != DoorDirection.NONE;
+    }
 
-	// sets whether the cell is a room center
-	public void setRoomCenter(boolean roomCenter) {
-		this.roomCenter = roomCenter;
-	}
+    public DoorDirection getDoorDirection() {
+        return doorDirection;
+    }
 
-	// checks if the cell contains a room label
-	public boolean isRoomLabel() {
-		return roomLabel;
-	}
+    public void setDoorDirection(DoorDirection direction) {
+        this.doorDirection = direction;
+    }
 
-	// returns if the cell is a room label for the 306 tests
-	public boolean isLabel() {
-		return roomLabel;
-	}
+    public boolean isRoomCenter() {
+        return roomCenter;
+    }
 
-	// sets whether the cell contains a room label
-	public void setRoomLabel(boolean roomLabel) {
-		this.roomLabel = roomLabel;
-	}
+    public void setRoomCenter(boolean roomCenter) {
+        this.roomCenter = roomCenter;
+    }
 
-	// returns the destination initial of a secret passage
-	public char getSecretPassage() {
-		return secretPassage;
-	}
+    public boolean isRoomLabel() {
+        return roomLabel;
+    }
 
-	// sets the destination initial of a secret passage
-	public void setSecretPassage(char secretPassage) {
-		this.secretPassage = secretPassage;
-	}
+    public boolean isLabel() {
+        return roomLabel;
+    }
 
-	// adds a cell to the adjacency list
-	public void addAdjacency(BoardCell cell) {
-		adjList.add(cell);
-	}
+    public void setRoomLabel(boolean roomLabel) {
+        this.roomLabel = roomLabel;
+    }
 
-	// returns the adjacency list for this cell
-	public Set<BoardCell> getAdjList() {
-		return adjList;
-	}
+    public char getSecretPassage() {
+        return secretPassage;
+    }
 
-	// checks if the cell is a walkway
-	public boolean isWalkway() {
-		return initial == 'W';
-	}
+    public void setSecretPassage(char secretPassage) {
+        this.secretPassage = secretPassage;
+    }
 
-	// checks if the cell is occupied by a player
-	public boolean isOccupied() {
-		return occupied;
-	}
+    public void addAdjacency(BoardCell cell) {
+        adjList.add(cell);
+    }
 
-	// sets whether the cell is occupies by a player
-	public void setOccupied(boolean occupied) {
-		this.occupied = occupied;
-	}
+    public Set<BoardCell> getAdjList() {
+        return adjList;
+    }
+
+    public boolean isWalkway() {
+        return initial == 'W';
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public boolean isRoom() {
+        return roomCard != null || (initial != 'W' && initial != 'X');
+    }
+
+    public Card getRoomCard() {
+        return roomCard;
+    }
+    
+    public void setRoomCard(Card card) {
+        this.roomCard = card;
+    }
 }
