@@ -143,7 +143,7 @@ public class GameControlPanel extends JPanel {
         // Create an instance of our panel
         GameControlPanel panel = new GameControlPanel();
 
-        panel.setTurn("Col. Mustard", Color.YELLOW);
+        panel.setTurn("Steve", Color.BLUE);
         panel.setRoll(5);
         panel.setGuess("I have no guess!");
         panel.setGuessResult("So you have nothing?");
