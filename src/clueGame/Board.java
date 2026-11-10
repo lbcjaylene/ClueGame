@@ -40,15 +40,19 @@ public class Board {
 	private List<Card> deck = new ArrayList<>();
 	private Solution solution;
 	
-	// Setters and Getters for Testing
+	// setters and getters for testing
+	
+	// sets a known solution for testing accusations
 	public void setTheAnswer(Solution answer) { 
 		this.solution = answer; 
 	}
 	
+	// sets the player order for testing suggestions
 	public void setPlayers(List<Player> players) { 
 		this.players = players; 
 	}
 	
+	// sets the cards used by the computer suggestion tests
 	public void setDeck(List<Card> deck) { 
 		this.deck = deck; 
 	}
@@ -83,9 +87,7 @@ public class Board {
 			}
 		}
 
-	/**
-	 * Checks if an accusation matches the secret solution envelope.
-	 */
+	// checks if an accusation matches the secret solution envelope
 	public boolean checkAccusation(Solution accusation) {
 		if (solution == null || accusation == null) {
 			return false;
@@ -95,16 +97,16 @@ public class Board {
 			   accusation.getRoom().equals(solution.getRoom());
 	}
 
-	/**
-	 * Processes players in turn order (starting with player after accuser)
-	 * to see if anyone can disprove a suggestion.
-	 */
+	// processes players in turn order (starting with player after accuser) to see if anyone can disprove a suggestion
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
+		
+		// finds the suggesting player in the turn order
 		int accuserIndex = players.indexOf(accuser);
 		if (accuserIndex == -1) {
 			return null;
 		}
 		
+		// starts with the next player and skips the suggesting player
 		int numPlayers = players.size();
 		for (int i = 1; i < numPlayers; i++) {
 			int currentIndex = (accuserIndex + i) % numPlayers;
@@ -115,7 +117,6 @@ public class Board {
 			}
 		}
 		return null;
-
 	}
 
 	// calculates the adjacency list for every cell on the board
@@ -455,17 +456,22 @@ public class Board {
 	// builds the deck containing cards for rooms, players, and weapons
 	public void buildDeck() {
 		deck.clear();
-
+		
+		// adds room cards to the deck and connects them to room centers
 		for (Room room : roomMap.values()) {
-			if (room.isPublicRoom()) {
-				deck.add(new Card(room.getName(), CardType.ROOM));
-			}
-		}
+		    if (room.isPublicRoom()) {
+		        Card roomCard = new Card(room.getName(), CardType.ROOM);
+		        deck.add(roomCard);
 
+		        // assigns the matching card to the room center
+		        if (room.getCenterCell() != null) {
+		            room.getCenterCell().setRoomCard(roomCard);
+		        }
+		    }
+		}
 		for (Player player : players) {
 			deck.add(new Card(player.getName(), CardType.PERSON));
 		}
-
 		for (String weapon : weaponList) {
 			deck.add(new Card(weapon, CardType.WEAPON));
 		}
@@ -497,6 +503,7 @@ public class Board {
 
 		for (Player player : players) {
 			player.clearHand();
+			player.clearSeenCards();
 		}
 
 		int playerIndex = 0;

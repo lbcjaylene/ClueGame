@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,155 +16,144 @@ import clueGame.ComputerPlayer;
 import clueGame.Solution;
 
 public class ComputerAITest {
-    private static Card mustardCard, scarlettCard, plumCard;
-    private static Card ropeCard, knifeCard, wrenchCard;
-    private static Card conservatoryCard, kitchenCard, hallCard;
+	private static Card steveCard, alexCard, villagerCard;
+    private static Card diamondSwordCard, bowCard, tridentCard;
+    private static Card enchantmentRoomCard, netherFortressCard, trialChambersCard;
 
+    // sets up the person, weapon, and room cards used in the AI tests
     @BeforeAll
     public static void setupCards() {
-        mustardCard = new Card("Colonel Mustard", CardType.PERSON);
-        scarlettCard = new Card("Miss Scarlett", CardType.PERSON);
-        plumCard = new Card("Professor Plum", CardType.PERSON);
-
-        ropeCard = new Card("Rope", CardType.WEAPON);
-        knifeCard = new Card("Knife", CardType.WEAPON);
-        wrenchCard = new Card("Wrench", CardType.WEAPON);
-
-        conservatoryCard = new Card("Conservatory", CardType.ROOM);
-        kitchenCard = new Card("Kitchen", CardType.ROOM);
-        hallCard = new Card("Hall", CardType.ROOM);
+    	steveCard = new Card("Steve", CardType.PERSON);
+        alexCard = new Card("Alex", CardType.PERSON);
+        villagerCard = new Card("Villager", CardType.PERSON);
+        diamondSwordCard = new Card("Diamond Sword", CardType.WEAPON);
+        bowCard = new Card("Bow", CardType.WEAPON);
+        tridentCard = new Card("Trident", CardType.WEAPON);
+        enchantmentRoomCard = new Card("Enchantment Room", CardType.ROOM);
+        netherFortressCard = new Card("Nether Fortress", CardType.ROOM);
+        trialChambersCard = new Card("Trial Chambers", CardType.ROOM);
     }
 
-    // ==========================================
-    // REQUIREMENT 4: Create Suggestion Tests
-    // ==========================================
-
+    // Requirement 4: Create Suggestion Tests
+    
+    // tests if the suggested room matches the room the computer entered
     @Test
     public void testCreateSuggestionRoomMatchesCurrentLocation() {
-        ComputerPlayer player = new ComputerPlayer("AI", "Red", 0, 0);
+        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
         Board board = Board.getInstance();
         board.setDeck(allDeck());
-
-        Solution suggestion = player.createSuggestion(conservatoryCard);
-        assertEquals(conservatoryCard, suggestion.getRoom(), 
-            "Suggested room must match current room location.");
+        Solution suggestion = player.createSuggestion(enchantmentRoomCard);
+        assertEquals(enchantmentRoomCard, suggestion.getRoom(), "Suggested room must match current room location.");
     }
 
+    // tests if the computer chooses the only unseen person and weapon
     @Test
     public void testCreateSuggestionOneUnseenPersonAndWeapon() {
-        ComputerPlayer player = new ComputerPlayer("AI", "Red", 0, 0);
+        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
         Board board = Board.getInstance();
         board.setDeck(allDeck());
 
-        player.updateSeen(scarlettCard);
-        player.updateSeen(plumCard);
-        player.updateSeen(knifeCard);
-        player.updateSeen(wrenchCard);
+        // marks the other cards as seen so only one option remains
+        player.updateSeen(alexCard);
+        player.updateSeen(villagerCard);
+        player.updateSeen(bowCard);
+        player.updateSeen(tridentCard);
 
-        Solution suggestion = player.createSuggestion(conservatoryCard);
-        assertEquals(mustardCard, suggestion.getPerson(), 
-            "If only one unseen person remains, it must be selected.");
-        assertEquals(ropeCard, suggestion.getWeapon(), 
-            "If only one unseen weapon remains, it must be selected.");
+        Solution suggestion = player.createSuggestion(enchantmentRoomCard);
+        assertEquals(steveCard, suggestion.getPerson(), "If only one unseen person remains, it must be selected.");
+        assertEquals(diamondSwordCard, suggestion.getWeapon(), "If only one unseen weapon remains, it must be selected.");
     }
 
+    // tests if the computer randomly chooses between unseen people and weapons
     @Test
     public void testCreateSuggestionMultipleUnseenPersonsAndWeapons() {
-        ComputerPlayer player = new ComputerPlayer("AI", "Red", 0, 0);
+        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
         Board board = Board.getInstance();
         board.setDeck(allDeck());
+        player.updateSeen(villagerCard);
+        player.updateSeen(tridentCard);
+        boolean selectedSteve = false;
+        boolean selectedAlex = false;
+        boolean selectedDiamondSword = false;
+        boolean selectedBow = false;
 
-        player.updateSeen(plumCard);
-        player.updateSeen(wrenchCard);
-
-        boolean selectedMustard = false;
-        boolean selectedScarlett = false;
-        boolean selectedRope = false;
-        boolean selectedKnife = false;
-
+        // repeats the selection to check that each possible option gets chosen
         for (int i = 0; i < 100; i++) {
-            Solution suggestion = player.createSuggestion(conservatoryCard);
-            if (suggestion.getPerson().equals(mustardCard)) selectedMustard = true;
-            if (suggestion.getPerson().equals(scarlettCard)) selectedScarlett = true;
-            if (suggestion.getWeapon().equals(ropeCard)) selectedRope = true;
-            if (suggestion.getWeapon().equals(knifeCard)) selectedKnife = true;
+            Solution suggestion = player.createSuggestion(enchantmentRoomCard);
+            if (suggestion.getPerson().equals(steveCard)) selectedSteve = true;
+            if (suggestion.getPerson().equals(alexCard)) selectedAlex = true;
+            if (suggestion.getWeapon().equals(diamondSwordCard)) selectedDiamondSword = true;
+            if (suggestion.getWeapon().equals(bowCard)) selectedBow = true;
         }
-
-        assertTrue(selectedMustard && selectedScarlett, 
-            "Multiple unseen persons must be selected randomly.");
-        assertTrue(selectedRope && selectedKnife, 
-            "Multiple unseen weapons must be selected randomly.");
+        assertTrue(selectedSteve && selectedAlex, "Multiple unseen persons must be selected randomly.");
+        assertTrue(selectedDiamondSword && selectedBow, "Multiple unseen weapons must be selected randomly.");
     }
 
-    // ==========================================
-    // REQUIREMENT 5: Select Target Tests
-    // ==========================================
-
+    // Requirement 5: Select Target Tests
+    
+    // tests if the computer randomly selects a walkway when no rooms are targets
     @Test
     public void testSelectTargetNoRoomsInListSelectRandomly() {
-        ComputerPlayer player = new ComputerPlayer("AI", "Red", 0, 0);
+        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
         Set<BoardCell> targets = new HashSet<>();
-        BoardCell cell1 = new BoardCell(1, 1);
-        BoardCell cell2 = new BoardCell(1, 2);
+        BoardCell cell1 = new BoardCell(1, 1, 'W');
+        BoardCell cell2 = new BoardCell(1, 2, 'W');
         targets.add(cell1);
         targets.add(cell2);
-
         boolean selectedCell1 = false;
         boolean selectedCell2 = false;
 
+        // repeats the selection to check that each possible option gets chosen
         for (int i = 0; i < 100; i++) {
             BoardCell target = player.selectTarget(targets);
             if (target.equals(cell1)) selectedCell1 = true;
             if (target.equals(cell2)) selectedCell2 = true;
         }
-
-        assertTrue(selectedCell1 && selectedCell2, 
-            "If no rooms present in target list, select target randomly.");
+        assertTrue(selectedCell1 && selectedCell2, "If no rooms present in target list, select target randomly.");
     }
 
+    // tests if the computer chooses an unseen room over a walkway
     @Test
     public void testSelectTargetUnseenRoomSelected() {
-        ComputerPlayer player = new ComputerPlayer("AI", "Red", 0, 0);
+        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
         Set<BoardCell> targets = new HashSet<>();
-        BoardCell walkwayCell = new BoardCell(1, 1);
-        BoardCell roomCell = new BoardCell(2, 2, conservatoryCard);
+        BoardCell walkwayCell = new BoardCell(1, 1, 'W');
+        BoardCell roomCell = new BoardCell(2, 2, enchantmentRoomCard);
         targets.add(walkwayCell);
         targets.add(roomCell);
-
         BoardCell selected = player.selectTarget(targets);
-        assertEquals(roomCell, selected, 
-            "If unseen room is in target list, it must be selected.");
+        assertEquals(roomCell, selected, "If unseen room is in target list, it must be selected.");
     }
 
+    // tests if the computer randomly selects a target when the room has been seen
     @Test
     public void testSelectTargetSeenRoomSelectedRandomly() {
-        ComputerPlayer player = new ComputerPlayer("AI", "Red", 0, 0);
+        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
         Set<BoardCell> targets = new HashSet<>();
-        BoardCell walkwayCell = new BoardCell(1, 1);
-        BoardCell roomCell = new BoardCell(2, 2, conservatoryCard);
+        BoardCell walkwayCell = new BoardCell(1, 1, 'W');
+        BoardCell roomCell = new BoardCell(2, 2, enchantmentRoomCard);
         targets.add(walkwayCell);
         targets.add(roomCell);
-
-        player.updateSeen(conservatoryCard);
-
+        player.updateSeen(enchantmentRoomCard);
         boolean selectedWalkway = false;
         boolean selectedRoom = false;
 
+        // repeats the selection to check that each possible option gets chosen
         for (int i = 0; i < 100; i++) {
             BoardCell selected = player.selectTarget(targets);
             if (selected.equals(walkwayCell)) selectedWalkway = true;
             if (selected.equals(roomCell)) selectedRoom = true;
         }
-
-        assertTrue(selectedWalkway && selectedRoom, 
-            "If room in target list has been seen, target selection must be random (including room).");
+        assertTrue(selectedWalkway && selectedRoom, "If room in target list has been seen, target selection must be random (including room).");
     }
 
-    private HashSet<Card> allDeck() {
-        HashSet<Card> deck = new HashSet<>();
-        deck.add(mustardCard); deck.add(scarlettCard); deck.add(plumCard);
-        deck.add(ropeCard); deck.add(knifeCard); deck.add(wrenchCard);
-        deck.add(conservatoryCard); deck.add(kitchenCard); deck.add(hallCard);
+    // creates a small deck of cards for testing the suggestions
+    private ArrayList<Card> allDeck() {
+        ArrayList<Card> deck = new ArrayList<>();
+        deck.add(steveCard); deck.add(alexCard); deck.add(villagerCard);
+        deck.add(diamondSwordCard); deck.add(bowCard); deck.add(tridentCard);
+        deck.add(enchantmentRoomCard); deck.add(netherFortressCard); deck.add(trialChambersCard);
         return deck;
     }
 }
+

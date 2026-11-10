@@ -23,10 +23,10 @@ public abstract class Player {
     private int row;
     private int column;
 
-    // Cards currently in player's hand
+    // cards currently in player's hand
     protected List<Card> hand = new ArrayList<>();
     
-    // Cards seen by player throughout the game
+    // cards seen by player throughout the game
     protected Set<Card> seenCards = new HashSet<>();
 
     public Player(String name, String color, int row, int column) {
@@ -35,12 +35,14 @@ public abstract class Player {
         this.row = row;
         this.column = column;
     }
-
+    
+    // adds a card to the player hand and marks it as seen
     public void updateHand(Card card) {
         hand.add(card);
         updateSeen(card);
     }
 
+    // adds a card to the list of cards the player has seen
     public void updateSeen(Card card) {
         seenCards.add(card);
     }
@@ -49,8 +51,14 @@ public abstract class Player {
         return seenCards;
     }
 
+    // removes all cards from the player hand
     public void clearHand() {
         hand.clear();
+    }
+    
+    // clears the cards the player has seen for a new game
+    public void clearSeenCards() {
+        seenCards.clear();
     }
 
     public List<Card> getHand() {
@@ -73,12 +81,11 @@ public abstract class Player {
         return column;
     }
 
-    /**
-     * Disproves a suggestion using matching cards in the player's hand.
-     */
+    // disproves a suggestion using matching cards in the player's hand.
     public Card disproveSuggestion(Solution suggestion) {
+    	
+    	// stores all cards in the hand that match the suggestion
         List<Card> matchingCards = new ArrayList<>();
-
         for (Card card : hand) {
             if (card.equals(suggestion.getPerson()) ||
                 card.equals(suggestion.getWeapon()) ||
@@ -87,6 +94,7 @@ public abstract class Player {
             }
         }
 
+        // returns null if there is no match or randomly picks if there are multiple
         if (matchingCards.isEmpty()) {
             return null;
         } else if (matchingCards.size() == 1) {
@@ -97,3 +105,4 @@ public abstract class Player {
         }
     }
 }
+

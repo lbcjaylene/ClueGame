@@ -1,48 +1,84 @@
-<<<<<<< Updated upstream
-I, Jaylene Khourn, certify that I participated equitably in the creation of assignment LO15A Refactoring, dated 11/4/26
-I, Trisha Varadaraj, certify that I participated equitably in the creation of this assignment LO15A Reafactoring, dated 11/4/26.
-=======
-commit 776bdadbad058e7dd5d6ae3f8bd054840bc382e9
+commit 2685600a00ec46a1d535e2e23dd9e544ffa53f7c
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Fri Nov 6 14:16:31 2026 -0700
+
+    Refactored code for Board.java and also added headers to some classes
+
+commit 6428077bc9ccf842eaab8acaca4b136798d6abf4
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Mon Oct 19 21:29:06 2026 -0600
+Date:   Fri Nov 6 09:08:03 2026 -0700
 
-    Completed
+    Implement LO16 setup logic, building deck, deal function,
 
- gitlog.txt | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-commit d3a0d610a425631411f5f091c7debc62ec491638
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Mon Oct 19 21:28:13 2026 -0600
->>>>>>> Stashed changes
-
-
-commit 990db6c2115f18f27b696337c10da0fb18c71f5b
+commit 8113c077d2108cd73e4368b885642be55e4eca56
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Wed Nov 4 12:27:44 2026 -0700
+Date:   Thu Nov 5 21:58:04 2026 -0700
 
-    extracted the cell adjacency calculation into a helper method to condense the calcAdjacency() method
+    fixed errors in other test files
 
-commit bda46aadc06db7d08d7fc40cfe5ca15551c37eca
+commit d8b76810a1d7ae87b08e033e51ee493f40f6393a
+Merge: c1f8153 7622291
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Wed Nov 4 12:22:59 2026 -0700
+Date:   Thu Nov 5 21:34:35 2026 -0700
 
-    removed the redundant constructor call and unused cell fields
+    Merge player setup and board changes
 
-commit 60a7b8b728f84022c8a1f1d37f19bcd62d541ba5
+commit c1f8153c215118917b4612a41f6ea10068f230f6
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Tue Nov 3 13:20:23 2026 -0700
+Date:   Thu Nov 5 21:08:55 2026 -0700
 
-    extracted room cell configuration into another helper method
+    completed player setup and JUnit tests
 
-commit 35101f2192b9736f3fd51606db8bbea90b167056
+commit ac28afdedbf7ef14304dd9020bea68f13c7f61a8
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Tue Nov 3 13:06:41 2026 -0700
+Date:   Thu Nov 5 21:05:04 2026 -0700
 
-    extracted door direction logic into a helper method
+    added a test to verify player info from setup file
 
-commit 764be43a08ba0ee717b90448bf72cb216068efc5
+commit 5c072943721e2900145afbcf99cfb159af71925d
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Tue Nov 3 12:58:35 2026 -0700
+Date:   Thu Nov 5 20:55:50 2026 -0700
 
-    Refactored BoardCell adjacency list initialization
+    added a test that verified human and computer player counts
+
+commit 9c0e26c3a00932b4aadff12cbbff0fc73daaf8b4
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 20:50:54 2026 -0700
+
+    updated the setup method to support player entries and recognize weapons
+
+commit 07ef3ce659bd0a1589205e5fe4d8f8ebbf7b51db
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 19:58:16 2026 -0700
+
+    implemented the player color and starting location
+
+commit 47ca67a81ac654c431dad32c6176a2dff2c89b17
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 19:49:21 2026 -0700
+
+    implemented player names and constructors with passing tests
+
+commit 30312671e2d66fbef0ee28275778d5566cda747f
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 19:25:35 2026 -0700
+
+    added the ComputerPlayer subclass
+
+commit 25edea6305aca1d3783e4c3c697a17f3e3e6d800
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 19:23:29 2026 -0700
+
+    added the failing test for the ComputerPlayer inheritance
+
+commit 51934c25a086141ed8ec515e1f4ac056e8bbeebb
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 19:21:35 2026 -0700
+
+    added the failing JUnit test for the HumanPlayer inheritance
+
+commit 3f50d03a36bede3eb06e85d385f5e1e67cc4adc1
+Author: lbcjaylene <jayleneekhourn@gmail.com>
+Date:   Thu Nov 5 19:12:14 2026 -0700
+
+    added initial failing test for HumanPlayer inheritance

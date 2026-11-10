@@ -25,9 +25,9 @@ public class BoardCell {
     private char secretPassage;
     private Set<BoardCell> adjList;
     private boolean occupied = false;
-    private Card roomCard; // Used for testing target selection
+    private Card roomCard; // used for testing target selection
 
-    // Main constructor used by Board layout loader
+    // main constructor used by Board layout loader
     public BoardCell(int row, int col, char initial) {
         this.row = row;
         this.col = col;
@@ -40,7 +40,7 @@ public class BoardCell {
         this.adjList = new HashSet<>();
     }
 
-    // Secondary constructor for standalone AI unit testing
+    // secondary constructor for standalone AI unit testing
     public BoardCell(int row, int col, Card roomCard) {
         this(row, col, 'R');
         this.roomCard = roomCard;
@@ -123,6 +123,7 @@ public class BoardCell {
         return roomCard != null || (initial != 'W' && initial != 'X');
     }
 
+    // returns the room card used for computer movement tests
     public Card getRoomCard() {
         return roomCard;
     }
