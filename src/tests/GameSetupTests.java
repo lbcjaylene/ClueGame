@@ -58,7 +58,6 @@ public class GameSetupTests {
     @Test
     public void testPlayerColorAndLocation() {
         Player player = new HumanPlayer("Steve", "Blue", 0, 5);
-
         assertEquals("Blue", player.getColor());
         assertEquals(0, player.getRow());
         assertEquals(5, player.getColumn());
@@ -69,7 +68,6 @@ public class GameSetupTests {
     public void testPlayerTypes() {
         int humanCount = 0;
         int computerCount = 0;
-
         for (Player player : board.getPlayers()) {
             if (player instanceof HumanPlayer) {
                 humanCount++;
@@ -77,7 +75,6 @@ public class GameSetupTests {
                 computerCount++;
             }
         }
-
         assertEquals(1, humanCount);
         assertEquals(5, computerCount);
     }
@@ -86,7 +83,6 @@ public class GameSetupTests {
     @Test
     public void testPlayerInformation() {
         Player player = board.getPlayers().get(0);
-
         assertEquals("Steve", player.getName());
         assertEquals("Blue", player.getColor());
         assertEquals(0, player.getRow());
@@ -98,7 +94,6 @@ public class GameSetupTests {
     @Test
     public void testPlayersLoaded() {
         List<Player> players = board.getPlayers();
-
         assertEquals(6, players.size());
 
         // check the human player
@@ -113,12 +108,9 @@ public class GameSetupTests {
 
     // tests that the deck contains 21 cards
     @Test
-
     public void testDeckLoaded() {
         List<Card> deck = board.getDeck();
-
         assertEquals(21, deck.size());
-
         int peopleCount = 0;
         int roomCount = 0;
         int weaponCount = 0;
@@ -133,7 +125,6 @@ public class GameSetupTests {
                 weaponCount++;
             }
         }
-
         assertEquals(6, peopleCount);
         assertEquals(9, roomCount);
         assertEquals(6, weaponCount);
@@ -149,29 +140,23 @@ public class GameSetupTests {
         assertNotNull(solution);
         assertNotNull(solution.getPerson());
         assertEquals(CardType.PERSON, solution.getPerson().getCardType());
-
         assertNotNull(solution.getRoom());
         assertEquals(CardType.ROOM, solution.getRoom().getCardType());
-
         assertNotNull(solution.getWeapon());
         assertEquals(CardType.WEAPON, solution.getWeapon().getCardType());
 
         // check that all remaining cards are dealt
         List<Player> players = board.getPlayers();
         Set<Card> dealtCards = new HashSet<>();
-
         int expectedHandSize = (21 - 3) / players.size();
-
         for (Player player : players) {
             assertEquals(expectedHandSize, player.getHand().size());
-
             for (Card card : player.getHand()) {
                 // no card should appear in two hands
                 assertFalse(dealtCards.contains(card));
                 dealtCards.add(card);
             }
         }
-
         assertEquals(18, dealtCards.size());
     }
 }

@@ -32,13 +32,11 @@ public class GameSolutionTest {
     @BeforeEach
     public void setUp() {
         board = Board.getInstance();
-        // Clear previous state and set known answer
+        // Clear the before state and set known answer
         board.setTheAnswer(new Solution(mustardCard, ropeCard, conservatoryCard));
     }
 
-    // ==========================================
-    // REQUIREMENT 1: Check an Accusation Tests
-    // ==========================================
+    // REQUIREMENT: Check an Accusation Tests
 
     @Test
     public void testCheckAccusationCorrect() {
@@ -68,9 +66,7 @@ public class GameSolutionTest {
             "Accusation with wrong room should return false.");
     }
 
-    // ==========================================
-    // REQUIREMENT 2: Player Disproves Suggestion Tests
-    // ==========================================
+    // REQUIREMENT: Player Disproves Suggestion Tests
 
     @Test
     public void testDisproveSuggestionOneMatchingCard() {
@@ -117,9 +113,7 @@ public class GameSolutionTest {
             "Player with no matching cards should return null.");
     }
 
-    // ==========================================
-    // REQUIREMENT 3: Handle a Suggestion Made Tests
-    // ==========================================
+    // REQUIREMENT: Handle a Suggestion Made Tests
 
     @Test
     public void testHandleSuggestionNoOneDisproves() {
