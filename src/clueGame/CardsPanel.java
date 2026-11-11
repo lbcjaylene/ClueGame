@@ -3,95 +3,122 @@ package clueGame;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.List;
+import java.util.ArrayList;
+
+
+ // CardsPanel shows the player's known cards arranged by categories  People, Rooms, Weapons. 
+// shows both cards in hand, and seen cards.
 
 public class CardsPanel extends JPanel {
 
-    private JPanel peopleInHandPanel;
-    private JPanel peopleSeenPanel;
-    private JPanel roomsInHandPanel;
-    private JPanel roomsSeenPanel;
-    private JPanel weaponsInHandPanel;
-    private JPanel weaponsSeenPanel;
+    // Sub-panels used to hold and dynamically update card lists
+    private JPanel handPeoplePanel, seenPeoplePanel; // Instance Variables . 
+    private JPanel handRoomsPanel, seenRoomsPanel;
+    private JPanel handWeaponsPanel, seenWeaponsPanel;
 
     public CardsPanel() {
+        // 3x1 grid so People, Rooms, and Weapons stack vertically
         setLayout(new GridLayout(3, 1, 5, 5));
         setBorder(new TitledBorder("Known Cards"));
 
-        peopleInHandPanel = new JPanel();
-        peopleSeenPanel = new JPanel();
-        add(createCategoryPanel("People", peopleInHandPanel, peopleSeenPanel));
+        // Initialize sub-panels for People
+        handPeoplePanel =new JPanel();
+        seenPeoplePanel= new JPanel();
+        add(createCategorySection("People", handPeoplePanel, seenPeoplePanel));
 
-        roomsInHandPanel = new JPanel();
-        roomsSeenPanel = new JPanel();
-        add(createCategoryPanel("Rooms", roomsInHandPanel, roomsSeenPanel));
+        // Rooms
+        handRoomsPanel= new JPanel();
+        seenRoomsPanel = new JPanel();
+        add(createCategorySection("Rooms", handRoomsPanel, seenRoomsPanel));
 
-        weaponsInHandPanel = new JPanel();
-        weaponsSeenPanel = new JPanel();
-        add(createCategoryPanel("Weapons", weaponsInHandPanel, weaponsSeenPanel));
+        // Weapons
+        handWeaponsPanel= new JPanel();
+        seenWeaponsPanel = new JPanel();
+        add(createCategorySection("Weapons", handWeaponsPanel, seenWeaponsPanel));
 
-        updatePanel(peopleInHandPanel, null);
-        updatePanel(peopleSeenPanel, null);
-        updatePanel(roomsInHandPanel, null);
-        updatePanel(roomsSeenPanel, null);
-        updatePanel(weaponsInHandPanel, null);
-        updatePanel(weaponsSeenPanel, null);
+        // Show the default empty state ("None") when initialized
+        setCardList(handPeoplePanel,new ArrayList<>());
+        setCardList(seenPeoplePanel, new ArrayList<>());
+        setCardList(handRoomsPanel, new ArrayList<>());
+        setCardList(seenRoomsPanel,new ArrayList<>());
+        setCardList(handWeaponsPanel, new ArrayList<>());
+        setCardList(seenWeaponsPanel,new ArrayList<>());
     }
 
-    private JPanel createCategoryPanel(String title, JPanel inHandContainer, JPanel seenContainer) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(new TitledBorder(title));
+    
+     // Build a single category box .    
+  
+    private JPanel createCategorySection(String title, JPanel handPanel, JPanel seenPanel) {
+        JPanel section = new JPanel(); // containing box for specific category 
+        section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS)); // BoxLayout going vertically 
+        section.setBorder(new TitledBorder(title)); // Titled Border around specific seection 
 
-        JLabel inHandLabel = new JLabel("In Hand:");
-        inHandLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(inHandLabel);
+        // Add "In Hand" label and panel container
+        JLabel handLabel= new JLabel("In Hand:");
+        handLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        section.add(handLabel);
+        
+        handPanel.setLayout(new BoxLayout(handPanel, BoxLayout.Y_AXIS));
+        handPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        section.add(handPanel);
 
-        inHandContainer.setLayout(new BoxLayout(inHandContainer, BoxLayout.Y_AXIS));
-        inHandContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(inHandContainer);
+        // Add vertical spacer in between of the sections
+        section.add(Box.createVerticalStrut(5));
 
-        panel.add(Box.createVerticalStrut(5));
-
+        // "Seen" label + panel container
         JLabel seenLabel = new JLabel("Seen:");
         seenLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(seenLabel);
+        section.add(seenLabel);
 
-        seenContainer.setLayout(new BoxLayout(seenContainer, BoxLayout.Y_AXIS));
-        seenContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
-        panel.add(seenContainer);
+        seenPanel.setLayout(new BoxLayout(seenPanel, BoxLayout.Y_AXIS));
+        seenPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        section.add(seenPanel);
 
-        return panel;
+        return section;
     }
 
-    private JTextField createCardTextField(String text, Color bgColor) {
-        JTextField textField = new JTextField(text);
-        textField.setEditable(false);
-        textField.setBackground(bgColor);
-        textField.setMaximumSize(new Dimension(180, 25));
-        textField.setPreferredSize(new Dimension(180, 25));
-        textField.setAlignmentX(Component.LEFT_ALIGNMENT);
-        return textField;
+    
+     // Helper method for styled, non-editable text fields for cards.
+     
+    private JTextField makeCardField(String name, Color color) {
+        JTextField field = new JTextField(name);
+        field.setEditable(false);
+        field.setBackground(color);
+        field.setMaximumSize(new Dimension(180, 25));
+        field.setPreferredSize(new Dimension(180, 25));
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return field;
     }
 
-    public void updatePanel(JPanel container, List<String> cards) {
-        container.removeAll();
-        if (cards == null || cards.isEmpty()) {
-            container.add(createCardTextField("None", Color.WHITE));
+    
+     // Updates a sub-panel with text fields for provided cards. Has a field with "None" if list is empty/ null.
+    
+    public void setCardList(JPanel targetPanel, java.util.List<String> cardNames) {
+        targetPanel.removeAll();
+
+        // Check if there are cards to show
+        if (cardNames== null||cardNames.isEmpty()){
+            targetPanel.add(makeCardField("None",Color.WHITE)); // "NONE" with a white background 
         } else {
-            for (String cardName : cards) {
-                container.add(createCardTextField(cardName, Color.WHITE));
+            for (String name:cardNames) {
+                targetPanel.add(makeCardField(name,Color.WHITE));
             }
         }
-        container.revalidate();
-        container.repaint();
+
+        // Refresh UI areas 
+        targetPanel.revalidate();
+        targetPanel.repaint();
     }
 
+    // Main method to test + preview GUI frame layout standalone
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Known Cards Display Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(220, 700);
-        frame.add(new CardsPanel());
-        frame.setVisible(true);
+        JFrame testFrame = new JFrame("Known Cards Test");
+        testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        testFrame.setSize(220, 700);
+        testFrame.add(new CardsPanel());
+        testFrame.setVisible(true);
     }
 }
+
+
+
