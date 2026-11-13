@@ -34,14 +34,9 @@ public class ComputerAITest {
         trialChambersCard = new Card("Trial Chambers", CardType.ROOM);
     }
 
-<<<<<<< Updated upstream
     // Requirement 4: Create Suggestion Tests
     
     // tests if the suggested room matches the room the computer entered
-=======
-    // REQUIREMENT 4: Create Suggestion Tests
-
->>>>>>> Stashed changes
     @Test
     public void testCreateSuggestionRoomMatchesCurrentLocation() {
         ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
@@ -94,14 +89,9 @@ public class ComputerAITest {
         assertTrue(selectedDiamondSword && selectedBow, "Multiple unseen weapons must be selected randomly.");
     }
 
-<<<<<<< Updated upstream
     // Requirement 5: Select Target Tests
     
     // tests if the computer randomly selects a walkway when no rooms are targets
-=======
-    // REQUIREMENT: Select Target Tests
-
->>>>>>> Stashed changes
     @Test
     public void testSelectTargetNoRoomsInListSelectRandomly() {
         ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);

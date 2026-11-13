@@ -1,0 +1,12 @@
+Jaylene Khourn and Trisha Varadraj
+
+Our progress -
+
+We created a CardsPanel class using Java Swing to display the cards known to the player. The panel is divided into 
+three categories: People, Rooms, and Weapons. Each category has separate sections for cards in the player's hand 
+and cards they have seen. We used GridLayout and BoxLayout to organize the different sections and added titled 
+borders to make the panel easier to read. We also implemented a method to update the displayed cards and show 
+"None" when no cards are available. We included a main method to test the panel independently in a JFrame.
+The panel currently displays correctly using placeholder information, but we still need to connect it to the 
+player's actual hand and seen cards. Our next step is to integrate it into the Minecraft-themed Clue game alongside 
+the game control panel.

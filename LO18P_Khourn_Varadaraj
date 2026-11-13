@@ -1,8 +1,0 @@
-Jaylene Khourn and Trisha Varadraj
-
-Our progress -
-We created a GameControlPanel class using Java Swing. Our control panel includes buttons for moving to the next player 
-and making an accusation, along with fields displaying the current player's turn, dice roll, guesses, and guess results. 
-We also implemented setter methods to update the information displayed in each field. We used GridLayout and FlowLayout to
-organize the components and created a main method to test the panel independently in a JFrame. Our layout is similar to the 
-instructor's example.
