@@ -1,11 +1,17 @@
-commit bdb318255e79691902196cf5d463b6a40f81797e
+commit f575fa8ea9672e14093c1a09d33db835ce293593
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Mon Nov 16 14:57:28 2026 -0700
+Date:   Mon Nov 16 20:44:11 2026 -0700
 
-    updated GameControlPanel comments and updated main method
+    added color coded seen cards, updated main method
 
-commit 28f092d3923c7bb0361e187f511cc449b2046fbc
+commit 8b5013855ddaad9f6d6d00f62e631d680e58ceb1
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Mon Nov 9 21:16:05 2026 -0700
+Date:   Wed Nov 11 12:47:19 2026 -0700
 
-    Implement GameControlPanel GUI
+    Fixed and Comments
+
+commit baa11e18088c595144501d4db324acd8a4e86623
+Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
+Date:   Wed Nov 11 12:20:08 2026 -0700
+
+    Added CardsPanel
