@@ -214,5 +214,3 @@ public class GameControlPanel extends JPanel {
 }
 
 
-
-
