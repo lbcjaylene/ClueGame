@@ -39,6 +39,7 @@ public class ComputerAITest {
     }
 
     // Create Suggestion Tests
+    // Requirement 4: Create Suggestion Tests
     
     // tests if the suggested room matches the room the computer entered
     @Test
@@ -94,6 +95,7 @@ public class ComputerAITest {
     }
 
     // Select Target Tests
+    // Requirement 5: Select Target Tests
     
     // tests if the computer randomly selects a walkway when no rooms are targets
     @Test

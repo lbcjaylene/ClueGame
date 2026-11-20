@@ -1,24 +1,11 @@
-commit 6e53fc7bff06ea529a69d60a406edf5386caaca4
+commit bdb318255e79691902196cf5d463b6a40f81797e
 Author: lbcjaylene <jayleneekhourn@gmail.com>
-Date:   Mon Nov 9 22:47:48 2026 -0700
+Date:   Mon Nov 16 14:57:28 2026 -0700
 
-    implemented computerPlayer logic, fixed references and added more comments
+    updated GameControlPanel comments and updated main method
 
 commit 28f092d3923c7bb0361e187f511cc449b2046fbc
 Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
 Date:   Mon Nov 9 21:16:05 2026 -0700
 
     Implement GameControlPanel GUI
-
-commit c6dbf30ca5bb0aa76c49f53b6213d5101001c123
-Merge: fd69b7c 2685600
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Mon Nov 9 20:45:01 2026 -0700
-
-    Resolved merge conflicts and finalized Board.java logic
-
-commit fd69b7ce34f8265166fe90fca955f0b12ad802e8
-Author: Trisha Varadaraj <trisha_varadaraj@mines.edu>
-Date:   Mon Nov 9 20:30:51 2026 -0700
-
-    Completed Clue Player 2 Requirements, like Board.java and Player.java updates, GameSolutionTest, ComputerAITest.
