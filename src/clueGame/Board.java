@@ -23,8 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.awt.Graphics;
+import javax.swing.JPanel; 
 
-public class Board {
+public class Board extends JPanel {
 	
 	private BoardCell[][] grid;
 	private int numRows;
@@ -371,18 +373,18 @@ public class Board {
 	            if (line.isEmpty()) {
 	                continue;
 	            }
-	            rows.add(line.split(",", -1));
+	            rows.add(line.split(",",-1));
 	        }
 	    }
 
-	    numRows = rows.size();
+	    numRows= rows.size();
 	    if (numRows == 0) {
 	        throw new BadConfigFormatException("Layout file is empty.");
 	    }
-	    numColumns = rows.get(0).length;
+	    numColumns =rows.get(0).length;
 	    
-	    for (String[] row : rows) {
-	        if (row.length != numColumns) {
+	    for (String[] row :rows) {
+	        if (row.length !=numColumns) {
 	            throw new BadConfigFormatException("Layout rows have inconsistent columns.");
 	        }
 	    }
@@ -537,7 +539,7 @@ public class Board {
 		return players;
 	}
 	
-	public List<Card> getDeck() {
+	public List<Card>getDeck() {
 	    return deck;
 	}
 
@@ -550,12 +552,50 @@ public class Board {
 	}
 	
 	// returns the set of possible movement targets
-	public Set<BoardCell> getTargets() {
+	public Set<BoardCell>getTargets(){
 		return targets;
 	}
 
 	// returns the adjacent cells for the given row and column
-	public Set<BoardCell> getAdjList(int row, int col) {
+	public Set<BoardCell> getAdjList(int row,int col) {
 		return grid[row][col].getAdjList();
-	}
+	} // NEW BELOW 
+	// draws board cells, room names,  players
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (grid== null|| numRows == 0|| numColumns == 0) {
+				return;
+			}
+
+			// calculate square cell dimensions dynamically for window resizing
+			int cellWidth =getWidth() / numColumns;
+			int cellHeight =getHeight()/ numRows;
+			int cellSize = Math.min(cellWidth,cellHeight);
+
+			// center the board inside the JPanel
+			int xOffset= (getWidth()- (cellSize *numColumns)) / 2;
+			int yOffset = (getHeight() - (cellSize *numRows)) / 2;
+
+			// draw all board cells (walkways, rooms, closets, doorways)
+			for (int row = 0; row < numRows;row++) {
+				for (int col =0; col< numColumns; col++) {
+					grid[row][col].draw(g, cellSize,xOffset, yOffset);
+				}
+			}
+
+			// draw room names on top of drawn cells
+			for (int row = 0; row <numRows;row++) {
+				for (int col = 0; col< numColumns;col++) {
+					if (grid[row][col].isLabel()){
+						grid[row][col].drawName(g, cellSize, xOffset, yOffset);
+					}
+				}
+			}
+
+			// draw all players above board 
+			for (Player player: players) {
+				player.draw(g, cellSize,xOffset, yOffset);
+			}
+		}
 }

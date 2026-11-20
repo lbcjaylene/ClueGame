@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.awt.Color; // NEW 
+import java.awt.Graphics ; 
 
 public abstract class Player {
     private String name;
@@ -103,6 +105,51 @@ public abstract class Player {
             Random rand = new Random();
             return matchingCards.get(rand.nextInt(matchingCards.size()));
         }
+    }
+    
+ // converts  color string from ClueSetup.txt To a java.awt.Color
+    private Color convertColor(String colorStr) {
+        if (colorStr== null) {
+            return Color.BLACK;
+        }
+        switch (colorStr.trim().toLowerCase()) {
+        case "red":     
+        	return Color.RED;
+        case "yellow":  
+        	return Color.YELLOW;
+        case "white":   
+        	return Color.WHITE;
+        case "green":   
+        	return Color.GREEN;
+        case "blue":    
+        	return Color.BLUE;
+        case "purple":
+        case "magenta": 
+        	return Color.MAGENTA;
+        case "pink":    
+        	return Color.PINK;
+        case "orange":  
+        	return Color.ORANGE;
+        case "cyan":    
+        	return Color.CYAN;
+        case "gray":
+        case "grey" :    
+        	return Color.GRAY;
+        default:        
+        	return Color.BLACK;
+        }
+    }
+
+    // draws the player token on the board
+    public void draw(Graphics g,int cellSize, int xOffset, int yOffset) {
+        int x= xOffset + (column * cellSize);
+        int y = yOffset + (row *cellSize);
+
+        g.setColor(convertColor(color));
+        g.fillOval(x, y,cellSize, cellSize);
+
+        g.setColor(Color.BLACK);
+        g.drawOval(x,y, cellSize,cellSize) ;
     }
 }
 
