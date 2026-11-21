@@ -19,6 +19,7 @@ public class ClueGame extends JFrame {
         Board board= Board.getInstance();
         board.setConfigFiles("ClueLayout.csv","ClueSetup.txt");
         board.initialize();
+        board.deal();
 
         // Configure JFrame window
         setTitle("Clue Game");
@@ -36,7 +37,8 @@ public class ClueGame extends JFrame {
     }
 
     public static void main(String[] args) {
-        ClueGame game =new ClueGame();
+        ClueGame game = new ClueGame();
+        game.setLocationRelativeTo(null);
         game.setVisible(true);
     }
 }
