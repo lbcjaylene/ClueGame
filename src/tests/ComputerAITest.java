@@ -1,6 +1,7 @@
 package tests;
 
 import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,9 +11,12 @@ import java.util.Set;
 
 import clueGame.Board;
 import clueGame.BoardCell;
+
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.ComputerPlayer;
+
+
 import clueGame.Solution;
 
 public class ComputerAITest {
@@ -23,45 +27,46 @@ public class ComputerAITest {
     // sets up the person, weapon, and room cards used in the AI tests
     @BeforeAll
     public static void setupCards() {
-    	steveCard = new Card("Steve", CardType.PERSON);
+    	steveCard= new Card("Steve", CardType.PERSON);
         alexCard = new Card("Alex", CardType.PERSON);
-        villagerCard = new Card("Villager", CardType.PERSON);
-        diamondSwordCard = new Card("Diamond Sword", CardType.WEAPON);
-        bowCard = new Card("Bow", CardType.WEAPON);
+        villagerCard =new Card("Villager", CardType.PERSON);
+        diamondSwordCard =new Card("Diamond Sword", CardType.WEAPON);
+        bowCard = new Card("Bow",CardType.WEAPON);
         tridentCard = new Card("Trident", CardType.WEAPON);
-        enchantmentRoomCard = new Card("Enchantment Room", CardType.ROOM);
-        netherFortressCard = new Card("Nether Fortress", CardType.ROOM);
-        trialChambersCard = new Card("Trial Chambers", CardType.ROOM);
+        enchantmentRoomCard =new Card("Enchantment Room", CardType.ROOM);
+        netherFortressCard= new Card("Nether Fortress", CardType.ROOM);
+        trialChambersCard= new Card("Trial Chambers", CardType.ROOM);
     }
 
+    // Create Suggestion Tests
     // Requirement 4: Create Suggestion Tests
     
     // tests if the suggested room matches the room the computer entered
     @Test
     public void testCreateSuggestionRoomMatchesCurrentLocation() {
-        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
+        ComputerPlayer player= new ComputerPlayer("Alex", "Orange", 0, 17);
         Board board = Board.getInstance();
         board.setDeck(allDeck());
-        Solution suggestion = player.createSuggestion(enchantmentRoomCard);
-        assertEquals(enchantmentRoomCard, suggestion.getRoom(), "Suggested room must match current room location.");
+        Solution suggestion =player.createSuggestion(enchantmentRoomCard);
+        assertEquals(enchantmentRoomCard,suggestion.getRoom(), "Suggested room must match current room location.");
     }
 
     // tests if the computer chooses the only unseen person and weapon
     @Test
     public void testCreateSuggestionOneUnseenPersonAndWeapon() {
-        ComputerPlayer player = new ComputerPlayer("Alex", "Orange", 0, 17);
+        ComputerPlayer player= new ComputerPlayer("Alex", "Orange", 0, 17);
         Board board = Board.getInstance();
         board.setDeck(allDeck());
 
-        // marks the other cards as seen so only one option remains
+        // marks the other cards as seen so one option remains
         player.updateSeen(alexCard);
         player.updateSeen(villagerCard);
         player.updateSeen(bowCard);
         player.updateSeen(tridentCard);
 
-        Solution suggestion = player.createSuggestion(enchantmentRoomCard);
-        assertEquals(steveCard, suggestion.getPerson(), "If only one unseen person remains, it must be selected.");
-        assertEquals(diamondSwordCard, suggestion.getWeapon(), "If only one unseen weapon remains, it must be selected.");
+        Solution suggestion= player.createSuggestion(enchantmentRoomCard);
+        assertEquals(steveCard,suggestion.getPerson(),"If only one unseen person remains, it must be selected.");
+        assertEquals(diamondSwordCard,suggestion.getWeapon() , "If only one unseen weapon remains, it must be selected.");
     }
 
     // tests if the computer randomly chooses between unseen people and weapons
@@ -78,9 +83,9 @@ public class ComputerAITest {
         boolean selectedBow = false;
 
         // repeats the selection to check that each possible option gets chosen
-        for (int i = 0; i < 100; i++) {
+        for (int i= 0; i < 100; i++) {
             Solution suggestion = player.createSuggestion(enchantmentRoomCard);
-            if (suggestion.getPerson().equals(steveCard)) selectedSteve = true;
+            if (suggestion.getPerson(). equals(steveCard)) selectedSteve = true;
             if (suggestion.getPerson().equals(alexCard)) selectedAlex = true;
             if (suggestion.getWeapon().equals(diamondSwordCard)) selectedDiamondSword = true;
             if (suggestion.getWeapon().equals(bowCard)) selectedBow = true;
@@ -89,6 +94,7 @@ public class ComputerAITest {
         assertTrue(selectedDiamondSword && selectedBow, "Multiple unseen weapons must be selected randomly.");
     }
 
+    // Select Target Tests
     // Requirement 5: Select Target Tests
     
     // tests if the computer randomly selects a walkway when no rooms are targets
@@ -138,7 +144,7 @@ public class ComputerAITest {
         boolean selectedWalkway = false;
         boolean selectedRoom = false;
 
-        // repeats the selection to check that each possible option gets chosen
+        // repeats the selection to check if each possible option gets chosen
         for (int i = 0; i < 100; i++) {
             BoardCell selected = player.selectTarget(targets);
             if (selected.equals(walkwayCell)) selectedWalkway = true;
@@ -147,7 +153,7 @@ public class ComputerAITest {
         assertTrue(selectedWalkway && selectedRoom, "If room in target list has been seen, target selection must be random (including room).");
     }
 
-    // creates a small deck of cards for testing the suggestions
+    // makes small deck of cards for testing the suggestions
     private ArrayList<Card> allDeck() {
         ArrayList<Card> deck = new ArrayList<>();
         deck.add(steveCard); deck.add(alexCard); deck.add(villagerCard);
@@ -156,4 +162,3 @@ public class ComputerAITest {
         return deck;
     }
 }
-
