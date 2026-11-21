@@ -181,70 +181,60 @@ public class BoardCell {
         }
     }
 
- // Draws the room name inside its room boundaries
+ // draws the room name inside its room boundaries
     public void drawName(Graphics g, int cellSize, int xOffset, int yOffset) {
         if (!roomLabel || cellSize <= 0) {
             return;
         }
-
         Board board = Board.getInstance();
         Room room = board.getRoom(initial);
-
         if (room == null) {
             return;
         }
-
         String roomName = room.getName();
 
-        // Find the room boundaries along the label row
+        // find the room boundaries along the label row
         int leftCol = col;
         int rightCol = col;
-
-        while (leftCol > 0 &&
-               board.getCell(row, leftCol - 1).getInitial() == initial) {
+        while (leftCol > 0 && board.getCell(row, leftCol - 1).getInitial() == initial) {
             leftCol--;
         }
-
-        while (rightCol < board.getNumColumns() - 1 &&
-               board.getCell(row, rightCol + 1).getInitial() == initial) {
+        while (rightCol < board.getNumColumns() - 1 && board.getCell(row, rightCol + 1).getInitial() == initial) {
             rightCol++;
         }
 
-        // Calculate available space inside the room
+        // calculate available space inside the room
         int leftX = xOffset + leftCol * cellSize;
         int roomWidth = (rightCol - leftCol + 1) * cellSize;
         int availableWidth = Math.max(1, roomWidth - 4);
 
-        // Start with a font proportional to the cell size
+        // start with a font proportional to the cell size
         int fontSize = Math.max(1, cellSize / 3);
         Font font = new Font("Arial", Font.BOLD, fontSize);
         g.setFont(font);
-
         FontMetrics metrics = g.getFontMetrics();
 
         // Shrink the font until the name fits inside the room
-        while (metrics.stringWidth(roomName) > availableWidth
-                && fontSize > 1) {
+        while (metrics.stringWidth(roomName) > availableWidth && fontSize > 1) {
             fontSize--;
             font = new Font("Arial", Font.BOLD, fontSize);
             g.setFont(font);
             metrics = g.getFontMetrics();
         }
 
-        // Center the name within the room boundaries
+        // center the name within the room boundaries
         int textWidth = metrics.stringWidth(roomName);
         int x = leftX + (roomWidth - textWidth) / 2;
 
-        // Center the text vertically in the label cell
+        // center the text vertically in the label cell
         int centerY = yOffset + row * cellSize + cellSize / 2;
         int y = centerY +
                 (metrics.getAscent() - metrics.getDescent()) / 2;
 
-        // Draw the room name
+        // draw the room name
         g.setColor(Color.BLACK);
         g.drawString(roomName, x, y);
     }
-    
     
     
 }
